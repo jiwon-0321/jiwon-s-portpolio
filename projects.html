@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Projects - Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+</head>
+<body>
+    <header>
+        <div class="container">
+            <nav>
+                <ul>
+                    <li><a href="index.html">Home</a></li>
+                    <li><a href="about.html">About</a></li>
+                    <li><a href="projects.html" class="active">Projects</a></li>
+                    <li><a href="contact.html">Contact</a></li>
+                </ul>
+            </nav>
+            <div class="menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <!-- 프로젝트 목록 섹션 -->
+        <section id="project-list-section" class="projects">
+            <div class="container">
+                <h1>Projects</h1>
+                
+                <div class="project-filters">
+                    <button class="filter-btn active" data-filter="all">All</button>
+                    <button class="filter-btn" data-filter="residential">Residential</button>
+                    <button class="filter-btn" data-filter="commercial">Commercial</button>
+                    <button class="filter-btn" data-filter="public">Public</button>
+                </div>
+                
+                <div class="project-grid" id="project-grid">
+                    <!-- 프로젝트 카드는 JavaScript에서 동적으로 생성됩니다 -->
+                </div>
+            </div>
+        </section>
+
+        <!-- 프로젝트 상세 섹션 (처음에는 숨겨져 있음) -->
+        <section id="project-detail-section" class="project-details" style="display: none;">
+            <div class="container">
+                <div class="back-to-projects">
+                    <button id="back-button" class="back-btn">
+                        <i class="fas fa-arrow-left"></i> Back to Projects
+                    </button>
+                </div>
+
+                <div class="project-header">
+                    <h1 id="project-title" class="project-title"></h1>
+                    <div id="project-metadata" class="project-metadata">
+                        <!-- 메타데이터 항목은 JavaScript에서 동적으로 생성됩니다 -->
+                    </div>
+                </div>
+
+                <div id="project-gallery" class="project-gallery">
+                    <!-- 갤러리 항목은 JavaScript에서 동적으로 생성됩니다 -->
+                </div>
+
+                <div id="project-description" class="project-description">
+                    <!-- 프로젝트 설명은 JavaScript에서 동적으로 생성됩니다 -->
+                </div>
+
+                <div id="project-materials" class="project-materials">
+                    <h2 class="materials-title">Materials & Finishes</h2>
+                    <div id="materials-grid" class="materials-grid">
+                        <!-- 재료 항목은 JavaScript에서 동적으로 생성됩니다 -->
+                    </div>
+                </div>
+
+                <!-- PDF 업로드 섹션 -->
+                <div class="pdf-upload-section small-section">
+                    <h3 class="section-title-small">Project Documentation</h3>
+                    <p class="upload-description-small">Upload project-related documents (PDF format only)</p>
+                    
+                    <form id="pdfUploadForm" class="upload-form">
+                        <div class="file-input-container">
+                            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" class="file-input">
+                            <label for="pdfFile" class="file-label-small">
+                                <i class="fas fa-file-pdf"></i> Choose PDF
+                            </label>
+                            <span id="fileName" class="file-name">No file chosen</span>
+                        </div>
+                        <button type="submit" class="upload-btn-small">
+                            <i class="fas fa-upload"></i> Upload
+                        </button>
+                    </form>
+                    
+                    <div id="uploadStatus" class="upload-status"></div>
+                    
+                    <div id="uploadedFiles" class="uploaded-files-small">
+                        <h4>Documents</h4>
+                        <ul id="filesList">
+                            <!-- Uploaded files will be listed here -->
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 이미지 모달 -->
+        <div class="image-modal">
+            <span class="close-modal">&times;</span>
+            <img class="modal-content" id="expandedImg">
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-links">
+                    <a href="index.html">Home</a>
+                    <a href="about.html">About</a>
+                    <a href="projects.html">Projects</a>
+                    <a href="contact.html">Contact</a>
+                </div>
+                <div class="footer-social">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-pinterest"></i></a>
+                    <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2023 Studio. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/jquery.min.js"></script>
+    <script src="js/projects-data.js"></script>
+    <script src="js/projects.js"></script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

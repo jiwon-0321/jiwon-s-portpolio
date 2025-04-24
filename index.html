@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Portfolio</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        body {
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+        }
+        .hero-section {
+            height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            position: relative;
+            overflow: hidden;
+            padding: 0;
+            margin: 0;
+            background-color: #f5f5f5; /* 이미지 로드 전 배경색 */
+        }
+        .architecture-image {
+            width: 100%;
+            height: 100vh;
+            object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 1;
+        }
+        .hero-bg {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: url('https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80');
+            background-size: cover;
+            background-position: center;
+            z-index: 1;
+        }
+        .content-overlay {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+            color: white;
+            background-color: rgba(0, 0, 0, 0.4);
+            padding: 2rem;
+            border-radius: 10px;
+            max-width: 600px;
+            margin: 0 auto;
+            backdrop-filter: blur(5px);
+        }
+        .content-overlay h1 {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+        }
+        .content-overlay p {
+            font-size: 1.5rem;
+            margin-bottom: 2rem;
+            text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.5);
+        }
+        .view-project {
+            display: inline-block;
+            padding: 0.8rem 2rem;
+            background-color: rgba(255, 255, 255, 0.2);
+            color: white;
+            text-decoration: none;
+            border-radius: 30px;
+            transition: all 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+        .view-project:hover {
+            background-color: rgba(255, 255, 255, 0.3);
+            transform: translateY(-3px);
+        }
+        .hidden {
+            display: none;
+        }
+        footer {
+            position: absolute;
+            bottom: 0;
+            width: 100%;
+            z-index: 10;
+            background-color: transparent;
+            color: white;
+            text-align: center;
+            padding: 1rem;
+            margin-top: 0;
+        }
+        .social-links a {
+            color: white;
+        }
+        .social-links a:hover {
+            color: rgba(255, 255, 255, 0.7);
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="menu-toggle">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+        <nav>
+            <ul>
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section class="hero-section">
+            <!-- 백그라운드 이미지 대체 방식 -->
+            <div class="hero-bg"></div>
+            
+            <!-- 기존 이미지 방식 (백업) -->
+            <img 
+                src="https://images.unsplash.com/photo-1600585154340-be6161a56a0c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80" 
+                alt="Interior architecture with nature" 
+                class="architecture-image hidden"
+                id="mainImage"
+                onload="this.classList.remove('hidden')"
+                onerror="handleImageError()"
+            >
+            
+            <div class="content-overlay">
+                <h1>Sustainable Architecture</h1>
+                <p>Where nature meets modern design</p>
+                <a href="projects.html" class="view-project">View Projects</a>
+            </div>
+            
+            <footer>
+                <div class="social-links">
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                    <a href="#"><i class="fab fa-behance"></i></a>
+                </div>
+                <p>&copy; 2024 [Name]. All rights reserved.</p>
+            </footer>
+        </section>
+    </main>
+
+    <script>
+        // 이미지 오류 처리
+        function handleImageError() {
+            document.getElementById("mainImage").classList.add('hidden');
+            console.log("이미지 로드 실패, 백그라운드 이미지로 대체합니다");
+        }
+        
+        // 페이지 로드 완료 후 실행
+        window.addEventListener('DOMContentLoaded', function() {
+            // 이미지가 5초 내에 로드되지 않으면 백그라운드 이미지만 표시
+            setTimeout(function() {
+                const img = document.getElementById('mainImage');
+                if (img.complete === false) {
+                    handleImageError();
+                }
+            }, 5000);
+        });
+    </script>
+    <script src="js/main.js"></script>
+</body>
+</html> 

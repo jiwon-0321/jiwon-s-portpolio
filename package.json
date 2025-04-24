@@ -1,0 +1,13 @@
+{
+  "name": "portfolio-website",
+  "version": "1.0.0",
+  "description": "Portfolio Website",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "PORT=3000 node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+} 
