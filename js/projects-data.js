@@ -6,7 +6,7 @@ const projectsData = [
         category: "residential",
         year: "2023",
         description: "A contemporary residence designed for a family of four, featuring open living spaces and a seamless indoor-outdoor connection.",
-        thumbnail: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=500&q=80",
+        thumbnail: "images/portfolio/exam.jpg",
         location: "Jeju Island, South Korea",
         area: "350 m²",
         client: "Private Family",
@@ -17,7 +17,7 @@ const projectsData = [
         ],
         gallery: [
             {
-                image: "https://images.unsplash.com/photo-1600596542815-ffad4c1539a9?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                image: "images/portfolio/exam.jpg",
                 caption: "Modern Villa - Exterior View",
                 isMain: true
             },
@@ -192,6 +192,71 @@ const projectsData = [
                 name: "Acoustic Panels",
                 description: "Sound absorption on walls and ceilings",
                 color: "#F5F5F5"
+            }
+        ]
+    },
+    {
+        id: "cultural-center",
+        title: "Cultural Arts Center",
+        category: "public",
+        year: "2022",
+        description: "A community cultural center designed to host various arts events, exhibitions, and educational programs.",
+        thumbnail: "https://images.unsplash.com/photo-1518005068251-37900150dfca?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        location: "Busan, South Korea",
+        area: "1,200 m²",
+        client: "Busan City Government",
+        fullDescription: [
+            "This cultural arts center was designed as a versatile community space that caters to various cultural activities and events. The building features a contemporary design with elements inspired by traditional Korean architecture, creating a harmonious blend of old and new.",
+            "The main hall can accommodate up to 300 people and can be configured for performances, exhibitions, or community gatherings. Adjustable acoustics and flexible seating arrangements ensure optimal conditions for different types of events.",
+            "Surrounding the main hall are smaller studios and workshop spaces for educational programs and artist residencies. The building also includes a café and outdoor sculpture garden that serve as informal gathering spaces for the community."
+        ],
+        gallery: [
+            {
+                image: "https://images.unsplash.com/photo-1518005068251-37900150dfca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                caption: "Cultural Arts Center - Main Entrance",
+                isMain: true
+            },
+            {
+                image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Performance Hall",
+                isMain: false
+            },
+            {
+                image: "https://images.unsplash.com/photo-1525909002-1b05e0c869d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Exhibition Space",
+                isMain: false
+            },
+            {
+                image: "https://images.unsplash.com/photo-1594388256411-8c951fda4c47?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Workshop Area",
+                isMain: false
+            },
+            {
+                image: "https://images.unsplash.com/photo-1617713964062-f55a65c8712c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Outdoor Sculpture Garden",
+                isMain: false
+            }
+        ],
+        materials: [
+            {
+                name: "Natural Stone",
+                description: "Used for exterior facades and outdoor spaces",
+                color: "#CDC5BF"
+            },
+            {
+                name: "Acoustic Wood Panels",
+                description: "Used in the main performance hall",
+                color: "#8B4513"
+            },
+            {
+                name: "Exposed Concrete",
+                description: "Structural elements and feature walls",
+                color: "#C0C0C0"
+            },
+            {
+                name: "Tempered Glass",
+                description: "Used for the entrance and exhibition areas",
+                color: "#E6F2FF"
             }
         ]
     }

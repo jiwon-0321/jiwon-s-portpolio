@@ -18,15 +18,22 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 프로젝트 목록 초기화
     function initializeProjectList() {
+        console.log("프로젝트 목록 초기화 시작");
+        
         // 기존 목록 비우기
         projectGrid.innerHTML = '';
         
-        // 프로젝트 카드 생성 및 추가
-        projectsData.forEach(project => {
+        // 각 프로젝트 데이터를 순회하며 카드 생성
+        projectsData.forEach((project, index) => {
+            console.log(`프로젝트 카드 생성: ${project.id}, 카테고리: ${project.category}`);
+            
+            // 프로젝트 카드 요소 생성
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
             projectCard.setAttribute('data-category', project.category);
+            projectCard.setAttribute('data-id', project.id);
             
+            // 카드 내용 설정
             projectCard.innerHTML = `
                 <div class="project-img">
                     <img src="${project.thumbnail}" alt="${project.title}">
@@ -40,9 +47,18 @@ document.addEventListener('DOMContentLoaded', function() {
                 </div>
             `;
             
+            // 카드를 그리드에 추가
             projectGrid.appendChild(projectCard);
         });
         
+        console.log(`총 ${projectGrid.children.length}개의 프로젝트 카드가 생성됨`);
+        
+        // 상세 페이지 버튼에 이벤트 리스너 추가
+        addProjectDetailListeners();
+    }
+    
+    // 프로젝트 상세 페이지 이벤트 리스너 추가
+    function addProjectDetailListeners() {
         // View Project 버튼에 이벤트 리스너 추가
         document.querySelectorAll('.view-project').forEach(button => {
             button.addEventListener('click', function(e) {
@@ -56,31 +72,111 @@ document.addEventListener('DOMContentLoaded', function() {
                 window.history.pushState({}, '', url);
             });
         });
+        
+        // 프로젝트 이미지에도 이벤트 리스너 추가
+        document.querySelectorAll('.project-img img').forEach(img => {
+            img.addEventListener('click', function() {
+                const projectCard = this.closest('.project-card');
+                const projectId = projectCard.getAttribute('data-id');
+                
+                showProjectDetail(projectId);
+                
+                // URL 업데이트 (히스토리 관리)
+                const url = new URL(window.location);
+                url.searchParams.set('project', projectId);
+                window.history.pushState({}, '', url);
+            });
+            
+            // 마우스 커서 변경으로 클릭 가능함을 표시
+            img.style.cursor = 'pointer';
+        });
     }
     
     // 프로젝트 필터링 설정
     function setupProjectFilters() {
         const filterButtons = document.querySelectorAll('.filter-btn');
         
+        // 모든 필터 버튼에 클릭 이벤트 추가
         filterButtons.forEach(button => {
             button.addEventListener('click', function() {
-                // 활성화된 버튼 스타일 변경
+                const selectedFilter = this.getAttribute('data-filter');
+                console.log(`필터 클릭됨: ${selectedFilter}`);
+                
+                // 버튼 활성화 상태 설정
                 filterButtons.forEach(btn => btn.classList.remove('active'));
                 this.classList.add('active');
                 
-                const filter = this.getAttribute('data-filter');
-                
-                // 프로젝트 필터링
-                const projectCards = document.querySelectorAll('.project-card');
-                projectCards.forEach(card => {
-                    if (filter === 'all' || card.getAttribute('data-category') === filter) {
-                        card.style.display = 'block';
-                    } else {
-                        card.style.display = 'none';
-                    }
-                });
+                // 프로젝트 필터링 수행
+                filterProjects(selectedFilter);
             });
         });
+        
+        // 필터링 함수
+        function filterProjects(filter) {
+            console.log(`필터링 실행: ${filter}`);
+            
+            // 프로젝트 카드 요소들 가져오기
+            const projects = document.querySelectorAll('.project-card');
+            console.log(`전체 프로젝트 카드 수: ${projects.length}`);
+            
+            if (projects.length === 0) {
+                console.error('프로젝트 카드가 없습니다. 초기화가 제대로 안 된 것 같습니다.');
+                return;
+            }
+            
+            // 프로젝트 데이터 확인 (디버깅용)
+            if (window.projectsData) {
+                console.log('프로젝트 데이터 확인:', projectsData);
+                projectsData.forEach(project => {
+                    console.log(`데이터 - ID: ${project.id}, 카테고리: ${project.category}`);
+                });
+            } else {
+                console.error('projectsData가 정의되지 않았습니다.');
+            }
+            
+            // 각 프로젝트에 대해 필터 적용
+            let visibleCount = 0;
+            projects.forEach(project => {
+                const category = project.getAttribute('data-category');
+                const projectId = project.getAttribute('data-id');
+                
+                console.log(`카드 검사: ID=${projectId}, 카테고리=${category}, 필터=${filter}`);
+                
+                if (filter === 'all' || category === filter) {
+                    // 보여야 할 프로젝트
+                    project.style.display = 'block';
+                    setTimeout(() => {
+                        project.style.opacity = '1';
+                        project.style.transform = 'translateY(0)';
+                    }, 10);
+                    visibleCount++;
+                    console.log(`보이는 프로젝트: ${projectId} (카테고리: ${category})`);
+                } else {
+                    // 숨겨야 할 프로젝트
+                    project.style.opacity = '0';
+                    project.style.transform = 'translateY(20px)';
+                    setTimeout(() => {
+                        project.style.display = 'none';
+                    }, 300);
+                    console.log(`숨겨진 프로젝트: ${projectId} (카테고리: ${category})`);
+                }
+            });
+            
+            console.log(`필터 '${filter}' 적용 후 보이는 프로젝트 수: ${visibleCount}`);
+        }
+        
+        // 페이지 로드 시 모든 프로젝트를 보여주기 위해 'all' 필터 선택
+        setTimeout(() => {
+            console.log('초기 필터 설정 (all)');
+            const allFilterBtn = document.querySelector('.filter-btn[data-filter="all"]');
+            if (allFilterBtn) {
+                allFilterBtn.click();
+            } else {
+                console.error('All 필터 버튼을 찾을 수 없습니다');
+                // 버튼이 없는 경우 직접 필터링 실행
+                filterProjects('all');
+            }
+        }, 100);
     }
     
     // 프로젝트 상세 정보 표시
@@ -314,14 +410,26 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 초기화
     function initialize() {
+        console.log("프로젝트 페이지 초기화 시작");
+        
+        console.log("프로젝트 데이터:", projectsData);
+        console.log("프로젝트 그리드 요소:", projectGrid);
+        console.log("필터 버튼들:", document.querySelectorAll('.filter-btn'));
+        
+        // 프로젝트 목록 초기화
         initializeProjectList();
+        
+        // 프로젝트 필터링 설정
         setupProjectFilters();
         
         // URL에 project 파라미터가 있으면 해당 프로젝트 상세 표시
         const projectId = getUrlParameter('project');
         if (projectId) {
+            console.log("URL에서 프로젝트 ID 발견:", projectId);
             showProjectDetail(projectId);
         }
+        
+        console.log("프로젝트 페이지 초기화 완료");
     }
     
     // 초기화 실행

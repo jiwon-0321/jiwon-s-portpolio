@@ -209,8 +209,11 @@ document.addEventListener('DOMContentLoaded', function() {
         observer.observe(card);
     });
 
+    // 필터링 기능 개선
     filterButtons?.forEach(button => {
         button.addEventListener('click', function() {
+            console.log("필터 버튼 클릭됨:", this.getAttribute('data-filter'));
+            
             // 활성화된 버튼 스타일 변경
             filterButtons.forEach(btn => btn.classList.remove('active'));
             this.classList.add('active');
@@ -219,20 +222,25 @@ document.addEventListener('DOMContentLoaded', function() {
 
             // 필터링 애니메이션 - 전체 카드는 보이도록 하되 내용만 필터링
             projectCards.forEach(card => {
-                const projectInfo = card.querySelector('.project-info');
+                const category = card.getAttribute('data-category');
+                console.log(`카드 검사: id=${card.getAttribute('data-id')}, 카테고리=${category}, 필터=${filter}`);
                 
-                if (filter === 'all' || card.getAttribute('data-category') === filter) {
+                if (filter === 'all' || category === filter) {
+                    // 보여야 할 프로젝트
                     card.style.display = 'block';
                     setTimeout(() => {
                         card.style.opacity = '1';
-                        if (projectInfo) projectInfo.style.opacity = '1';
+                        card.style.transform = 'translateY(0)';
                     }, 50);
+                    console.log(`보이는 프로젝트: ${card.getAttribute('data-id')}`);
                 } else {
+                    // 숨겨야 할 프로젝트
                     card.style.opacity = '0';
-                    if (projectInfo) projectInfo.style.opacity = '0';
+                    card.style.transform = 'translateY(20px)';
                     setTimeout(() => {
                         card.style.display = 'none';
-                    }, 200);
+                    }, 300);
+                    console.log(`숨겨진 프로젝트: ${card.getAttribute('data-id')}`);
                 }
             });
         });
@@ -302,48 +310,8 @@ function setupProjectCards() {
             observer.observe(card);
         });
         
-        // 프로젝트 필터링 기능
-        const filterButtons = document.querySelectorAll('.filter-btn');
-        if (filterButtons.length > 0) {
-            filterButtons.forEach(button => {
-                button.addEventListener('click', () => {
-                    const filter = button.getAttribute('data-filter');
-                    
-                    // 활성 버튼 스타일 변경
-                    filterButtons.forEach(btn => btn.classList.remove('active'));
-                    button.classList.add('active');
-                    
-                    // 프로젝트 필터링
-                    projectCards.forEach(card => {
-                        card.style.display = 'none'; // 모든 카드 숨기기
-                        
-                        if (filter === 'all' || card.classList.contains(filter)) {
-                            card.style.display = 'block';
-                            
-                            // 필터링 후 즉시 프로젝트 정보 표시
-                            const info = card.querySelector('.project-info');
-                            if (info) {
-                                info.style.opacity = '1';
-                                info.style.transform = 'translateY(0)';
-                            }
-                            
-                            // View Details 버튼 즉시 활성화
-                            const viewButton = card.querySelector('.view-project');
-                            if (viewButton) {
-                                viewButton.style.opacity = '1';
-                                viewButton.style.pointerEvents = 'auto';
-                            }
-                            
-                            // 이미지 로딩은 별도로 처리
-                            setTimeout(() => {
-                                card.style.opacity = '1';
-                                card.style.transform = 'translateY(0)';
-                            }, 100);
-                        }
-                    });
-                });
-            });
-        }
+        // 프로젝트 필터링 기능 - 이 부분은 projects.js의 filterProjects 함수와 충돌할 수 있으므로 제거합니다.
+        // main.js와 projects.js 모두에서 필터링 이벤트를 등록하지 않도록 합니다.
     }
 }
 

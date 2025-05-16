@@ -19,6 +19,25 @@ body {
     font-family: 'Helvetica Neue', Arial, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
+    margin: 0;
+    padding: 0;
+    overflow-x: hidden;
+}
+
+main {
+    position: relative;
+    min-height: 100vh;
+    padding: 0;
+    margin: 0;
+}
+
+/* 컨테이너 공통 스타일 */
+.container {
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 20px;
+    border-bottom: none;
 }
 
 /* 헤더 스타일 */
@@ -26,16 +45,37 @@ header {
     position: fixed;
     top: 0;
     width: 100%;
-    background-color: var(--background-color);
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    background-color: transparent;
     z-index: 1000;
     transition: var(--transition);
+    padding: 0;
+    border-bottom: none;
+    box-shadow: none;
+}
+
+header .container {
+    border-bottom: none;
+}
+
+header.scrolled {
+    background-color: rgba(255, 255, 255, 0.95);
+    box-shadow: none;
+    border-bottom: none;
+}
+
+header.scrolled .container {
+    border-bottom: none;
+}
+
+header.scrolled nav ul li a {
+    color: var(--primary-color);
+    text-shadow: none;
 }
 
 nav {
     max-width: 1200px;
     margin: 0 auto;
-    padding: 1rem;
+    padding: 1.5rem 1rem;
 }
 
 nav ul {
@@ -53,12 +93,13 @@ nav ul li {
 
 nav ul li a {
     text-decoration: none;
-    color: var(--primary-color);
+    color: white;
     font-weight: 500;
     font-size: 1.1rem;
     padding: 0.5rem 0;
     position: relative;
     transition: var(--transition);
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.5);
 }
 
 nav ul li a::after {
@@ -67,18 +108,18 @@ nav ul li a::after {
     bottom: 0;
     left: 0;
     width: 0;
-    height: 2px;
-    background-color: var(--accent-color);
+    height: 0;
+    background-color: transparent;
     transition: var(--transition);
 }
 
 nav ul li a:hover::after,
 nav ul li a.active::after {
-    width: 100%;
+    width: 0;
 }
 
 nav ul li a:hover {
-    color: var(--accent-color);
+    color: rgba(255, 255, 255, 0.9);
 }
 
 /* 모바일 메뉴 버튼 */
@@ -111,18 +152,27 @@ nav ul li a:hover {
         cursor: pointer;
     }
 
+    .menu-toggle span {
+        display: block;
+        width: 30px;
+        height: 3px;
+        background-color: white;
+        margin: 6px 0;
+        transition: 0.3s;
+    }
+
     nav {
         position: fixed;
         top: 0;
         left: 0;
         width: 100%;
         height: 100vh;
-        background-color: var(--background-color);
+        background-color: rgba(0, 0, 0, 0.9);
         transform: translateX(-100%);
         transition: transform 0.3s ease;
         z-index: 999;
         padding: 2rem;
-        box-shadow: 0 0 20px rgba(0, 0, 0, 0.1);
+        box-shadow: none;
     }
 
     nav.active {
@@ -149,23 +199,14 @@ nav ul li a:hover {
         font-size: 1.5rem;
         padding: 0.5rem 1rem;
         display: block;
-        color: var(--primary-color);
+        color: white;
         text-decoration: none;
         transition: color 0.3s ease;
     }
 
     nav ul li a:hover,
     nav ul li a.active {
-        color: var(--accent-color);
-    }
-
-    .menu-toggle span {
-        display: block;
-        width: 30px;
-        height: 3px;
-        background-color: var(--primary-color);
-        margin: 6px 0;
-        transition: 0.3s;
+        color: rgba(255, 255, 255, 0.8);
     }
 
     .menu-toggle.active span:nth-child(1) {
@@ -182,21 +223,23 @@ nav ul li a:hover {
 
     /* 메인 컨텐츠 패딩 조정 */
     main {
-        padding-top: 60px;
+        padding: 0;
     }
 
     /* 프로젝트 페이지 반응형 */
     .projects-page {
-        padding: 1rem;
+        padding: 220px 20px 40px;
     }
 
     .project-filters {
         flex-wrap: wrap;
         gap: 0.5rem;
+        margin-top: 2rem;
+        padding-top: 1.5rem;
     }
 
     .filter-btn {
-        padding: 0.5rem 1rem;
+        padding: 0.6rem 1.2rem;
         font-size: 0.9rem;
     }
 
@@ -206,55 +249,53 @@ nav ul li a:hover {
     }
 }
 
-/* 히어로 이미지 섹션 */
-.hero-image {
+/* 히어로 섹션 스타일 */
+.hero-section {
     position: relative;
     width: 100%;
     height: 100vh;
-    margin-top: 0;
     overflow: hidden;
+    margin-top: 0;
+    padding-top: 0;
 }
 
-.hero-image-container {
-    width: 100%;
-    height: 100%;
+.hero-bg {
     position: absolute;
     top: 0;
     left: 0;
-    z-index: 1;
-}
-
-.hero-image-container img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
-    display: block;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    z-index: -1;
 }
 
-.hero-content {
+.content-overlay {
     position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 10%;
-    z-index: 2;
-    color: white;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
-    padding: 0 20px;
+    color: white;
+    z-index: 2;
+    width: 80%;
+    max-width: 800px;
 }
 
-.hero-content h1 {
-    font-size: 3rem;
+.content-overlay h1 {
+    font-size: 3.5rem;
     margin-bottom: 1rem;
     text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.7);
 }
 
-.hero-content p {
+.content-overlay p {
     font-size: 1.5rem;
     margin-bottom: 2rem;
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.7);
 }
 
-.hero-content .view-project {
+.content-overlay .view-project {
     display: inline-block;
     padding: 0.8rem 2rem;
     background-color: var(--accent-color);
@@ -268,30 +309,29 @@ nav ul li a:hover {
     box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
 }
 
-.hero-content .view-project:hover {
+.content-overlay .view-project:hover {
     background-color: #0056b3;
     transform: translateY(-3px);
     box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
 }
 
-/* 반응형 디자인 */
 @media (max-width: 768px) {
-    .hero-content h1 {
+    .content-overlay h1 {
         font-size: 2.2rem;
     }
     
-    .hero-content p {
+    .content-overlay p {
         font-size: 1.2rem;
     }
     
-    .hero-content .view-project {
+    .content-overlay .view-project {
         padding: 0.7rem 1.5rem;
     }
 }
 
 /* 프로젝트 페이지 스타일 */
 .projects-page {
-    padding: 120px 40px 60px;
+    padding: 250px 40px 60px;
     background-color: var(--light-gray);
 }
 
@@ -307,8 +347,23 @@ nav ul li a:hover {
     display: flex;
     justify-content: center;
     gap: 1rem;
+    margin-top: 3rem;
     margin-bottom: 3rem;
     flex-wrap: wrap;
+    padding-top: 2rem;
+    position: relative;
+}
+
+.project-filters::before {
+    content: '';
+    position: absolute;
+    top: -20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 50%;
+    height: 1px;
+    background-color: var(--secondary-color);
+    opacity: 0.2;
 }
 
 .filter-btn {
@@ -319,7 +374,7 @@ nav ul li a:hover {
     font-size: 1rem;
     font-weight: 500;
     cursor: pointer;
-    transition: var(--transition);
+    transition: color 0.3s ease, transform 0.3s ease;
     position: relative;
 }
 
@@ -331,8 +386,13 @@ nav ul li a:hover {
     width: 0;
     height: 2px;
     background-color: var(--accent-color);
-    transition: var(--transition);
+    transition: width 0.3s ease;
     transform: translateX(-50%);
+}
+
+.filter-btn:hover {
+    color: var(--accent-color);
+    transform: translateY(-2px);
 }
 
 .filter-btn:hover::after,
@@ -342,6 +402,7 @@ nav ul li a:hover {
 
 .filter-btn.active {
     color: var(--accent-color);
+    font-weight: 600;
 }
 
 .project-grid {
@@ -356,7 +417,10 @@ nav ul li a:hover {
     border-radius: 16px;
     overflow: hidden;
     box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
-    transition: var(--transition);
+    transition: opacity 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+    display: block;
+    opacity: 1;
+    transform: translateY(0);
 }
 
 .project-card:hover {
@@ -368,7 +432,12 @@ nav ul li a:hover {
     width: 100%;
     height: 250px;
     object-fit: cover;
-    transition: var(--transition);
+    transition: transform 0.3s ease;
+    cursor: pointer;
+}
+
+.project-card:hover img {
+    transform: scale(1.03);
 }
 
 .project-info {
@@ -437,7 +506,7 @@ nav ul li a:hover {
 /* 반응형 디자인 업데이트 */
 @media (max-width: 768px) {
     .projects-page {
-        padding: 100px 20px 40px;
+        padding: 220px 20px 40px;
     }
 
     .projects-page h1 {
@@ -1344,4 +1413,58 @@ footer {
         padding-left: 20px;
         padding-right: 20px;
     }
+}
+
+.hero-section footer {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 0;
+    color: white;
+}
+
+.hero-section .social-links {
+    margin-bottom: 0.5rem;
+}
+
+.hero-section .social-links a {
+    color: white;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.hero-section .social-links a:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-section footer p {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* header 내의 요소들에 경계선 제거 */
+header div, 
+header nav, 
+header ul, 
+header li, 
+header a {
+    border: none;
+    box-shadow: none;
+}
+
+header::after {
+    display: none;
+}
+
+/* projects.html 페이지의 헤더 스타일 조정 */
+body:has(.projects-page) header,
+body:has(.projects-page) header .container,
+body:has(.projects-page) header div {
+    border: none;
+    box-shadow: none;
 } 

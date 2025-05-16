@@ -14,4 +14,4 @@ app.get('*', (req, res) => {
 // 포트 충돌 방지 및 명시적 3000 포트 설정
 app.listen(3000, () => {
     console.log(`서버가 http://localhost:3000 에서 실행 중입니다.`);
-}); 
+});
