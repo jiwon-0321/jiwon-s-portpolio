@@ -18,15 +18,11 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 프로젝트 목록 초기화
     function initializeProjectList() {
-        console.log("프로젝트 목록 초기화 시작");
-        
         // 기존 목록 비우기
         projectGrid.innerHTML = '';
         
         // 각 프로젝트 데이터를 순회하며 카드 생성
         projectsData.forEach((project, index) => {
-            console.log(`프로젝트 카드 생성: ${project.id}, 카테고리: ${project.category}`);
-            
             // 프로젝트 카드 요소 생성
             const projectCard = document.createElement('div');
             projectCard.className = 'project-card';
@@ -50,8 +46,6 @@ document.addEventListener('DOMContentLoaded', function() {
             // 카드를 그리드에 추가
             projectGrid.appendChild(projectCard);
         });
-        
-        console.log(`총 ${projectGrid.children.length}개의 프로젝트 카드가 생성됨`);
         
         // 상세 페이지 버튼에 이벤트 리스너 추가
         addProjectDetailListeners();
@@ -113,25 +107,11 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 필터링 함수
         function filterProjects(filter) {
-            console.log(`필터링 실행: ${filter}`);
-            
             // 프로젝트 카드 요소들 가져오기
             const projects = document.querySelectorAll('.project-card');
-            console.log(`전체 프로젝트 카드 수: ${projects.length}`);
             
             if (projects.length === 0) {
-                console.error('프로젝트 카드가 없습니다. 초기화가 제대로 안 된 것 같습니다.');
                 return;
-            }
-            
-            // 프로젝트 데이터 확인 (디버깅용)
-            if (window.projectsData) {
-                console.log('프로젝트 데이터 확인:', projectsData);
-                projectsData.forEach(project => {
-                    console.log(`데이터 - ID: ${project.id}, 카테고리: ${project.category}`);
-                });
-            } else {
-                console.error('projectsData가 정의되지 않았습니다.');
             }
             
             // 각 프로젝트에 대해 필터 적용
@@ -139,8 +119,6 @@ document.addEventListener('DOMContentLoaded', function() {
             projects.forEach(project => {
                 const category = project.getAttribute('data-category');
                 const projectId = project.getAttribute('data-id');
-                
-                console.log(`카드 검사: ID=${projectId}, 카테고리=${category}, 필터=${filter}`);
                 
                 if (filter === 'all' || category === filter) {
                     // 보여야 할 프로젝트
@@ -150,7 +128,6 @@ document.addEventListener('DOMContentLoaded', function() {
                         project.style.transform = 'translateY(0)';
                     }, 10);
                     visibleCount++;
-                    console.log(`보이는 프로젝트: ${projectId} (카테고리: ${category})`);
                 } else {
                     // 숨겨야 할 프로젝트
                     project.style.opacity = '0';
@@ -158,11 +135,8 @@ document.addEventListener('DOMContentLoaded', function() {
                     setTimeout(() => {
                         project.style.display = 'none';
                     }, 300);
-                    console.log(`숨겨진 프로젝트: ${projectId} (카테고리: ${category})`);
                 }
             });
-            
-            console.log(`필터 '${filter}' 적용 후 보이는 프로젝트 수: ${visibleCount}`);
         }
         
         // 페이지 로드 시 모든 프로젝트를 보여주기 위해 'all' 필터 선택

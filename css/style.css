@@ -53,18 +53,22 @@ header {
     box-shadow: none;
 }
 
-header .container {
-    border-bottom: none;
+header .container,
+header div, 
+header nav, 
+header ul, 
+header li, 
+header a {
+    border: none;
+    box-shadow: none;
+}
+
+header::after {
+    display: none;
 }
 
 header.scrolled {
     background-color: rgba(255, 255, 255, 0.95);
-    box-shadow: none;
-    border-bottom: none;
-}
-
-header.scrolled .container {
-    border-bottom: none;
 }
 
 header.scrolled nav ul li a {
