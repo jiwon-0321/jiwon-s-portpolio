@@ -6,7 +6,7 @@ const projectsData = [
         category: "residential",
         year: "2023",
         description: "A contemporary residence designed for a family of four, featuring open living spaces and a seamless indoor-outdoor connection.",
-        thumbnail: "images/portfolio/exam.jpg",
+        thumbnail: "/images/portfolio/exam.jpg",
         location: "Jeju Island, South Korea",
         area: "350 m²",
         client: "Private Family",
@@ -17,7 +17,7 @@ const projectsData = [
         ],
         gallery: [
             {
-                image: "images/portfolio/exam.jpg",
+                image: "/images/portfolio/exam.jpg",
                 caption: "Modern Villa - Exterior View",
                 isMain: true
             },

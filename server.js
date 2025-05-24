@@ -6,12 +6,24 @@ const port = process.env.PORT || 3000;
 // 정적 파일 제공
 app.use(express.static(path.join(__dirname)));
 
-// 모든 라우트에 대해 index.html 제공
-app.get('*', (req, res) => {
+// HTML 파일들에 대한 라우팅
+app.get('/', (req, res) => {
     res.sendFile(path.join(__dirname, 'index.html'));
 });
 
-// 포트 충돌 방지 및 명시적 3000 포트 설정
-app.listen(3000, () => {
-    console.log(`서버가 http://localhost:3000 에서 실행 중입니다.`);
+app.get('/about', (req, res) => {
+    res.sendFile(path.join(__dirname, 'about.html'));
+});
+
+app.get('/projects', (req, res) => {
+    res.sendFile(path.join(__dirname, 'projects.html'));
+});
+
+app.get('/contact', (req, res) => {
+    res.sendFile(path.join(__dirname, 'contact.html'));
+});
+
+// Vercel과 로컬 환경 모두 지원
+app.listen(port, () => {
+    console.log(`서버가 포트 ${port}에서 실행 중입니다.`);
 });
