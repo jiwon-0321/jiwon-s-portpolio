@@ -2043,13 +2043,13 @@ body:has(.projects-page) header div {
     .reference-actions {
         position: relative;
         top: 0;
-        right: 0;
+    right: 0;
         margin-top: 0.5rem;
     }
     
     .reference-item {
         padding: 1rem;
-    }
+}
 }
 
 /* 인라인 참조 스타일 */
@@ -2166,10 +2166,10 @@ body:has(.projects-page) header div {
 
 .reference-content .reference-authors {
     color: var(--secondary-color);
-    font-size: 0.9rem;
+        font-size: 0.9rem;
     margin-bottom: 0.2rem;
-}
-
+    }
+    
 .reference-content .reference-publication {
     color: var(--text-color);
     font-size: 0.85rem;
@@ -2243,12 +2243,12 @@ body:has(.projects-page) header div {
         width: 250px;
         left: 0;
         transform: none;
-    }
-    
+}
+
     .reference-header-compact {
         padding: 0.8rem 1rem;
-    }
-    
+}
+
     .reference-title-compact {
         font-size: 0.9rem;
         margin-right: 0.5rem;
