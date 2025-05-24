@@ -641,7 +641,7 @@ document.addEventListener('DOMContentLoaded', function() {
             if (event.key === 'Escape' && modal.style.display === 'flex') {
                 modal.style.display = 'none';
                 enableBodyScroll();
-                
+        
                 // 추가 안전장치: 잠시 후 스크롤 상태 재확인
                 setTimeout(() => {
                     const materialModal = document.getElementById('materialUsageModal');
@@ -750,7 +750,7 @@ document.addEventListener('DOMContentLoaded', function() {
             forceEnableBodyScroll();
         }
     }, 3000);
-
+    
     // 초기화 실행
     initialize();
 }); 
