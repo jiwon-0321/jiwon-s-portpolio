@@ -76,31 +76,10 @@
                     </div>
                 </div>
 
-                <!-- PDF 업로드 섹션 -->
-                <div class="pdf-upload-section small-section">
-                    <h3 class="section-title-small">Project Documentation</h3>
-                    <p class="upload-description-small">Upload project-related documents (PDF format only)</p>
-                    
-                    <form id="pdfUploadForm" class="upload-form">
-                        <div class="file-input-container">
-                            <input type="file" id="pdfFile" name="pdfFile" accept="application/pdf" class="file-input">
-                            <label for="pdfFile" class="file-label-small">
-                                <i class="fas fa-file-pdf"></i> Choose PDF
-                            </label>
-                            <span id="fileName" class="file-name">No file chosen</span>
-                        </div>
-                        <button type="submit" class="upload-btn-small">
-                            <i class="fas fa-upload"></i> Upload
-                        </button>
-                    </form>
-                    
-                    <div id="uploadStatus" class="upload-status"></div>
-                    
-                    <div id="uploadedFiles" class="uploaded-files-small">
-                        <h4>Documents</h4>
-                        <ul id="filesList">
-                            <!-- Uploaded files will be listed here -->
-                        </ul>
+                <div id="project-references" class="project-references" style="display: none;">
+                    <h2 class="references-title">References</h2>
+                    <div id="references-list" class="references-list">
+                        <!-- 참고문헌 목록이 여기에 동적으로 생성됩니다 -->
                     </div>
                 </div>
             </div>
@@ -110,6 +89,22 @@
         <div class="image-modal">
             <span class="close-modal">&times;</span>
             <img class="modal-content" id="expandedImg">
+        </div>
+
+        <!-- 재질 사용 위치 모달 -->
+        <div class="material-usage-modal" id="materialUsageModal">
+            <div class="material-usage-content">
+                <div class="material-usage-header">
+                    <h2 class="material-usage-title" id="materialUsageTitle">Material Usage</h2>
+                    <p class="material-usage-subtitle" id="materialUsageSubtitle">Where this material is used in the project</p>
+                    <button class="close-material-modal" id="closeMaterialModal">&times;</button>
+                </div>
+                <div class="material-usage-gallery">
+                    <div class="usage-grid" id="usageGrid">
+                        <!-- 사용 위치 이미지들이 여기에 동적으로 추가됩니다 -->
+                    </div>
+                </div>
+            </div>
         </div>
     </main>
 

@@ -970,32 +970,551 @@ footer {
     left: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.9);
-    z-index: 1000;
+    background-color: rgba(0, 0, 0, 0.95);
+    z-index: 1002;
     overflow: hidden;
     justify-content: center;
     align-items: center;
+    padding: 20px;
+    box-sizing: border-box;
 }
 
 .modal-content {
-    max-width: 90%;
-    max-height: 90%;
+    max-width: 95%;
+    max-height: 95%;
+    width: auto;
+    height: auto;
     object-fit: contain;
+    border-radius: 8px;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: pixelated;
+    image-rendering: high-quality;
+    -ms-interpolation-mode: bicubic;
 }
 
 .close-modal {
     position: absolute;
-    top: 20px;
-    right: 30px;
+    top: 30px;
+    right: 40px;
     color: white;
-    font-size: 40px;
+    font-size: 45px;
     font-weight: 700;
     cursor: pointer;
-    transition: color 0.3s ease;
+    transition: all 0.3s ease;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5);
+    z-index: 1003;
 }
 
 .close-modal:hover {
     color: var(--accent-color);
+    transform: scale(1.1);
+}
+
+/* 재질 사용 위치 모달 스타일 */
+.material-usage-modal {
+    display: none;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.9);
+    z-index: 1001;
+    overflow-y: auto;
+    padding: 2rem;
+}
+
+.material-usage-content {
+    max-width: 1000px;
+    margin: 0 auto;
+    background: white;
+    border-radius: 12px;
+    overflow: hidden;
+    position: relative;
+    margin-top: 2rem;
+    margin-bottom: 2rem;
+}
+
+.material-usage-header {
+    background: var(--primary-color);
+    color: white;
+    padding: 2rem;
+    position: relative;
+}
+
+.material-usage-title {
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+}
+
+.material-usage-subtitle {
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 1.1rem;
+}
+
+.close-material-modal {
+    position: absolute;
+    top: 1rem;
+    right: 1.5rem;
+    color: white;
+    font-size: 2rem;
+    cursor: pointer;
+    transition: color 0.3s ease;
+    background: none;
+    border: none;
+    padding: 0.5rem;
+}
+
+.close-material-modal:hover {
+    color: var(--accent-color);
+}
+
+.material-usage-gallery {
+    padding: 2rem;
+}
+
+.usage-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+}
+
+.usage-item {
+    background: white;
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.usage-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.usage-image {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    cursor: pointer;
+}
+
+/* 이미지만 표시하는 스타일 */
+.usage-item-image-only {
+    border-radius: 8px;
+    overflow: hidden;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.usage-item-image-only:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.usage-image-only {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    cursor: pointer;
+    border-radius: 8px;
+    transition: transform 0.3s ease;
+    image-rendering: -webkit-optimize-contrast;
+    image-rendering: crisp-edges;
+    image-rendering: high-quality;
+    -ms-interpolation-mode: bicubic;
+}
+
+.usage-image-only:hover {
+    transform: scale(1.02);
+}
+
+/* 이미지 컨테이너 및 로딩 인디케이터 */
+.image-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #f8f9fa;
+}
+
+.loading-spinner {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 10;
+}
+
+.image-loading {
+    position: relative;
+}
+
+.image-loading::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 40px;
+    height: 40px;
+    margin: -20px 0 0 -20px;
+    border: 3px solid #f3f3f3;
+    border-top: 3px solid var(--accent-color);
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    z-index: 10;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
+}
+
+.usage-info {
+    padding: 1.5rem;
+}
+
+.usage-location {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    padding: 0.3rem 0.8rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    font-weight: 500;
+    margin-bottom: 0.8rem;
+}
+
+.usage-caption {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--primary-color);
+}
+
+.usage-description {
+    color: var(--secondary-color);
+    line-height: 1.5;
+}
+
+/* 재질 카드에 클릭 가능 스타일 추가 */
+.material-item {
+    border: 1px solid #eee;
+    border-radius: 4px;
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    cursor: pointer;
+}
+
+.material-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+.material-item.clickable {
+    cursor: pointer;
+    position: relative;
+}
+
+.material-item.clickable::after {
+    content: '클릭하여 사용 위치 보기';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0, 0, 0, 0.8);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    font-size: 0.9rem;
+    text-align: center;
+    padding: 1rem;
+}
+
+.material-item.clickable:hover::after {
+    opacity: 1;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .material-usage-modal {
+        padding: 1rem;
+    }
+    
+    .material-usage-content {
+        margin-top: 1rem;
+        margin-bottom: 1rem;
+    }
+    
+    .material-usage-header {
+        padding: 1.5rem;
+    }
+    
+    .material-usage-title {
+        font-size: 1.5rem;
+    }
+    
+    .usage-grid {
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+    }
+    
+    .usage-image {
+        height: 200px;
+    }
+    
+    .usage-image-only {
+        height: 250px;
+    }
+    
+    .material-usage-gallery {
+        padding: 1rem;
+    }
+}
+
+/* 이미지 로딩 효과 */
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+.project-card img, .gallery-item img {
+    opacity: 0;
+    animation: fadeIn 0.5s ease-in-out forwards;
+}
+
+.gallery-item img {
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.project-card img.loaded, .gallery-item img.loaded {
+    opacity: 1;
+}
+
+/* 이미지 로딩 중 표시할 스켈레톤 UI */
+.project-card, .gallery-item {
+    position: relative;
+    background-color: #f0f0f0;
+    overflow: hidden;
+}
+
+.project-card::before, .gallery-item::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
+    background-size: 200% 100%;
+    animation: shimmer 1.5s infinite;
+    z-index: 0;
+    opacity: 0.7;
+}
+
+.project-card img {
+    position: relative;
+    z-index: 1;
+}
+
+.project-card .project-info {
+    position: relative;
+    z-index: 2;
+    background-color: var(--background-color);
+}
+
+@keyframes shimmer {
+    0% { background-position: -200% 0; }
+    100% { background-position: 200% 0; }
+}
+
+/* 슬라이더 스타일 */
+.slider-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+.slide {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-size: cover;
+    background-position: center;
+    opacity: 0;
+    transition: opacity 1s ease-in-out;
+}
+
+.slide.active {
+    opacity: 1;
+}
+
+.slide-content {
+    position: absolute;
+    bottom: 20%;
+    left: 5%;
+    color: #fff;
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 2rem;
+    max-width: 600px;
+}
+
+.slide-title {
+    font-size: 2.5rem;
+    margin-bottom: 1rem;
+}
+
+.slide-description {
+    font-size: 1.2rem;
+    margin-bottom: 1.5rem;
+}
+
+/* 슬라이더 도트 네비게이션 스타일 */
+.slider-dots {
+    position: absolute;
+    bottom: 30px;
+    left: 0;
+    right: 0;
+    text-align: center;
+    z-index: 10;
+}
+
+.dot {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    margin: 0 8px;
+    background-color: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.dot.active {
+    background-color: #fff;
+    transform: scale(1.2);
+}
+
+/* 뒤로가기 버튼 스타일 */
+.back-to-projects {
+    margin-bottom: 2rem;
+}
+
+.back-btn {
+    display: inline-flex;
+    align-items: center;
+    padding: 0.7rem 1.2rem;
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: var(--transition);
+}
+
+.back-btn i {
+    margin-right: 0.5rem;
+}
+
+.back-btn:hover {
+    background-color: var(--accent-color);
+    transform: translateY(-2px);
+}
+
+/* 프로젝트 섹션 전환 애니메이션 */
+#project-list-section, #project-detail-section {
+    transition: opacity 0.3s ease;
+}
+
+/* 추가적인 프로젝트 상세 페이지 스타일 */
+.project-details {
+    padding-top: 120px;
+}
+
+@media (max-width: 768px) {
+    .back-btn {
+        padding: 0.6rem 1rem;
+        font-size: 0.9rem;
+    }
+    
+    .project-details {
+        padding-top: 100px;
+        padding-left: 20px;
+        padding-right: 20px;
+    }
+}
+
+.hero-section footer {
+    position: absolute;
+    bottom: 20px;
+    left: 0;
+    right: 0;
+    background-color: transparent;
+    text-align: center;
+    padding: 1rem;
+    margin-top: 0;
+    color: white;
+}
+
+.hero-section .social-links {
+    margin-bottom: 0.5rem;
+}
+
+.hero-section .social-links a {
+    color: white;
+    margin: 0 1rem;
+    font-size: 1.2rem;
+    transition: color 0.3s ease;
+}
+
+.hero-section .social-links a:hover {
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.hero-section footer p {
+    font-size: 0.8rem;
+    opacity: 0.8;
+}
+
+/* header 내의 요소들에 경계선 제거 */
+header div, 
+header nav, 
+header ul, 
+header li, 
+header a {
+    border: none;
+    box-shadow: none;
+}
+
+header::after {
+    display: none;
+}
+
+/* projects.html 페이지의 헤더 스타일 조정 */
+body:has(.projects-page) header,
+body:has(.projects-page) header .container,
+body:has(.projects-page) header div {
+    border: none;
+    box-shadow: none;
 }
 
 /* 반응형 스타일 */
@@ -1242,233 +1761,508 @@ footer {
     }
 }
 
-/* 이미지 로딩 효과 */
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
+/* 논문 참조 섹션 스타일 */
+.references-section {
+    margin: 1rem 0;
+    padding: 1.5rem;
+    background-color: var(--light-gray);
+    border-radius: 8px;
+    max-width: 800px;
+    margin-left: auto;
+    margin-right: auto;
+    border: 1px solid #e0e0e0;
 }
 
-.project-card img, .gallery-item img {
-    opacity: 0;
-    animation: fadeIn 0.5s ease-in-out forwards;
-}
-
-.gallery-item img {
-    object-fit: cover;
-    transition: transform 0.3s ease;
-}
-
-.project-card img.loaded, .gallery-item img.loaded {
-    opacity: 1;
-}
-
-/* 이미지 로딩 중 표시할 스켈레톤 UI */
-.project-card, .gallery-item {
-    position: relative;
-    background-color: #f0f0f0;
-    overflow: hidden;
-}
-
-.project-card::before, .gallery-item::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: linear-gradient(90deg, #f0f0f0, #e0e0e0, #f0f0f0);
-    background-size: 200% 100%;
-    animation: shimmer 1.5s infinite;
-    z-index: 0;
-    opacity: 0.7;
-}
-
-.project-card img {
-    position: relative;
-    z-index: 1;
-}
-
-.project-card .project-info {
-    position: relative;
-    z-index: 2;
-    background-color: var(--background-color);
-}
-
-@keyframes shimmer {
-    0% { background-position: -200% 0; }
-    100% { background-position: 200% 0; }
-}
-
-/* 슬라이더 스타일 */
-.slider-container {
-    position: relative;
-    width: 100%;
-    height: 100vh;
-    overflow: hidden;
-}
-
-.slide {
-    position: absolute;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background-size: cover;
-    background-position: center;
-    opacity: 0;
-    transition: opacity 1s ease-in-out;
-}
-
-.slide.active {
-    opacity: 1;
-}
-
-.slide-content {
-    position: absolute;
-    bottom: 20%;
-    left: 5%;
-    color: #fff;
-    background-color: rgba(0, 0, 0, 0.5);
-    padding: 2rem;
-    max-width: 600px;
-}
-
-.slide-title {
-    font-size: 2.5rem;
+.references-description-small {
     margin-bottom: 1rem;
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    font-style: italic;
 }
 
-.slide-description {
-    font-size: 1.2rem;
-    margin-bottom: 1.5rem;
-}
-
-/* 슬라이더 도트 네비게이션 스타일 */
-.slider-dots {
-    position: absolute;
-    bottom: 30px;
-    left: 0;
-    right: 0;
-    text-align: center;
-    z-index: 10;
-}
-
-.dot {
-    display: inline-block;
-    width: 12px;
-    height: 12px;
-    margin: 0 8px;
-    background-color: rgba(255, 255, 255, 0.5);
-    border-radius: 50%;
-    cursor: pointer;
-    transition: background-color 0.3s ease;
-}
-
-.dot.active {
-    background-color: #fff;
-    transform: scale(1.2);
-}
-
-/* 뒤로가기 버튼 스타일 */
-.back-to-projects {
+.reference-form {
     margin-bottom: 2rem;
 }
 
-.back-btn {
-    display: inline-flex;
-    align-items: center;
-    padding: 0.7rem 1.2rem;
-    background-color: var(--primary-color);
+.reference-input-group {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    flex-wrap: wrap;
+}
+
+.reference-input {
+    flex: 1;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    transition: border-color 0.3s ease;
+    min-width: 200px;
+}
+
+.reference-input:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.reference-input.small-input {
+    flex: 0 0 120px;
+    min-width: 120px;
+}
+
+.reference-select {
+    flex: 1;
+    padding: 0.6rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    background-color: white;
+    cursor: pointer;
+    min-width: 180px;
+}
+
+.reference-select:focus {
+    outline: none;
+    border-color: var(--accent-color);
+}
+
+.reference-textarea {
+    width: 100%;
+    padding: 0.8rem;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    font-size: 0.9rem;
+    resize: vertical;
+    min-height: 80px;
+    font-family: inherit;
+    margin-bottom: 1rem;
+}
+
+.reference-textarea:focus {
+    outline: none;
+    border-color: var(--accent-color);
+    box-shadow: 0 0 0 2px rgba(0, 123, 255, 0.1);
+}
+
+.add-reference-btn {
+    padding: 0.6rem 1.2rem;
+    background-color: var(--accent-color);
     color: white;
     border: none;
     border-radius: 4px;
     cursor: pointer;
-    font-size: 1rem;
     transition: var(--transition);
+    font-weight: 500;
+    font-size: 0.9rem;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
 }
 
-.back-btn i {
-    margin-right: 0.5rem;
-}
-
-.back-btn:hover {
-    background-color: var(--accent-color);
+.add-reference-btn:hover {
+    background-color: #0056b3;
     transform: translateY(-2px);
 }
 
-/* 프로젝트 섹션 전환 애니메이션 */
-#project-list-section, #project-detail-section {
-    transition: opacity 0.3s ease;
+.reference-status {
+    margin: 1rem 0;
+    padding: 0.8rem;
+    display: none;
+    border-radius: 4px;
+    font-size: 0.9rem;
 }
 
-/* 추가적인 프로젝트 상세 페이지 스타일 */
-.project-details {
-    padding-top: 120px;
+.reference-status.success {
+    display: block;
+    background-color: #d4edda;
+    color: #155724;
+    border: 1px solid #c3e6cb;
 }
 
-@media (max-width: 768px) {
-    .back-btn {
-        padding: 0.6rem 1rem;
-        font-size: 0.9rem;
-    }
-    
-    .project-details {
-        padding-top: 100px;
-        padding-left: 20px;
-        padding-right: 20px;
-    }
+.reference-status.error {
+    display: block;
+    background-color: #f8d7da;
+    color: #721c24;
+    border: 1px solid #f5c6cb;
 }
 
-.hero-section footer {
-    position: absolute;
-    bottom: 20px;
-    left: 0;
-    right: 0;
-    background-color: transparent;
-    text-align: center;
-    padding: 1rem;
-    margin-top: 0;
+.references-list h4 {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.references-container {
+    max-height: 400px;
+    overflow-y: auto;
+}
+
+.reference-item {
+    background: white;
+    border: 1px solid #e0e0e0;
+    border-radius: 6px;
+    padding: 1.2rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    transition: box-shadow 0.3s ease;
+    position: relative;
+}
+
+.reference-item:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reference-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 0.8rem;
+}
+
+.reference-type-badge {
+    background: var(--accent-color);
     color: white;
+    padding: 0.2rem 0.6rem;
+    border-radius: 12px;
+    font-size: 0.7rem;
+    font-weight: 500;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
 }
 
-.hero-section .social-links {
+.reference-title {
+    font-weight: 600;
+    color: var(--primary-color);
+    margin-bottom: 0.3rem;
+    font-size: 1rem;
+    line-height: 1.4;
+}
+
+.reference-authors {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.reference-publication {
+    color: var(--text-color);
+    font-size: 0.85rem;
+    font-style: italic;
     margin-bottom: 0.5rem;
 }
 
-.hero-section .social-links a {
-    color: white;
-    margin: 0 1rem;
-    font-size: 1.2rem;
-    transition: color 0.3s ease;
-}
-
-.hero-section .social-links a:hover {
-    color: rgba(255, 255, 255, 0.8);
-}
-
-.hero-section footer p {
+.reference-url {
     font-size: 0.8rem;
-    opacity: 0.8;
+    margin-bottom: 0.8rem;
 }
 
-/* header 내의 요소들에 경계선 제거 */
-header div, 
-header nav, 
-header ul, 
-header li, 
-header a {
+.reference-url a {
+    color: var(--accent-color);
+    text-decoration: none;
+    word-break: break-all;
+}
+
+.reference-url a:hover {
+    text-decoration: underline;
+}
+
+.reference-note {
+    background: #f8f9fa;
+    border-left: 3px solid var(--accent-color);
+    padding: 0.8rem;
+    margin-top: 0.8rem;
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--text-color);
+    border-radius: 0 4px 4px 0;
+}
+
+.reference-actions {
+    position: absolute;
+    top: 1rem;
+    right: 1rem;
+    display: flex;
+    gap: 0.5rem;
+}
+
+.reference-actions button {
+    background: none;
     border: none;
-    box-shadow: none;
+    cursor: pointer;
+    color: var(--secondary-color);
+    transition: color 0.3s ease;
+    padding: 0.3rem;
+    border-radius: 3px;
 }
 
-header::after {
-    display: none;
+.reference-actions button:hover {
+    color: var(--primary-color);
+    background: rgba(0, 0, 0, 0.05);
 }
 
-/* projects.html 페이지의 헤더 스타일 조정 */
-body:has(.projects-page) header,
-body:has(.projects-page) header .container,
-body:has(.projects-page) header div {
-    border: none;
-    box-shadow: none;
+.delete-reference {
+    color: #dc3545 !important;
+}
+
+.delete-reference:hover {
+    color: #c82333 !important;
+    background: rgba(220, 53, 69, 0.1) !important;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .references-section {
+        padding: 1rem;
+        margin: 0.5rem;
+    }
+    
+    .reference-input-group {
+        flex-direction: column;
+        gap: 0.8rem;
+    }
+    
+    .reference-input,
+    .reference-select {
+        min-width: unset;
+    }
+    
+    .reference-input.small-input {
+        flex: 1;
+    }
+    
+    .reference-header {
+        flex-direction: column-reverse;
+        align-items: flex-start;
+        gap: 0.5rem;
+    }
+    
+    .reference-actions {
+        position: relative;
+        top: 0;
+        right: 0;
+        margin-top: 0.5rem;
+    }
+    
+    .reference-item {
+        padding: 1rem;
+    }
+}
+
+/* 인라인 참조 스타일 */
+.reference-link {
+    display: inline-block;
+    background: var(--accent-color);
+    color: white;
+    padding: 0.1rem 0.4rem;
+    border-radius: 3px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    text-decoration: none;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    vertical-align: super;
+    line-height: 1;
+    margin: 0 0.1rem;
+}
+
+.reference-link:hover {
+    background: var(--primary-color);
+    transform: translateY(-1px);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+/* 참고문헌 섹션 스타일 */
+.project-references {
+    margin-top: 3rem;
+    padding: 2rem;
+    background: #f8f9fa;
+    border-radius: 8px;
+    border: 1px solid #e9ecef;
+}
+
+.references-title {
+    font-size: 1.5rem;
+    margin-bottom: 1.5rem;
+    color: var(--primary-color);
+    border-bottom: 2px solid var(--accent-color);
+    padding-bottom: 0.5rem;
+}
+
+.reference-item-display {
+    margin-bottom: 1rem;
+    background: white;
+    border-radius: 6px;
+    border-left: 4px solid var(--accent-color);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    overflow: hidden;
+    transition: box-shadow 0.3s ease;
+}
+
+.reference-item-display:hover {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.reference-header-compact {
+    display: flex;
+    align-items: center;
+    padding: 1rem 1.2rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    user-select: none;
+}
+
+.reference-header-compact:hover {
+    background-color: #f8f9fa;
+}
+
+.reference-number {
+    background: var(--accent-color);
+    color: white;
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    text-align: center;
+    line-height: 24px;
+    font-size: 0.8rem;
+    font-weight: 600;
+    margin-right: 0.8rem;
+    flex-shrink: 0;
+}
+
+.reference-title-compact {
+    flex: 1;
+    font-weight: 600;
+    color: var(--primary-color);
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-right: 1rem;
+}
+
+.reference-toggle-icon {
+    color: var(--secondary-color);
+    font-size: 0.8rem;
+    transition: transform 0.3s ease;
+    flex-shrink: 0;
+}
+
+.reference-details {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease;
+    background-color: #f8f9fa;
+}
+
+.reference-details.expanded {
+    max-height: 500px;
+}
+
+.reference-content {
+    padding: 0 1.2rem 1.2rem 3rem;
+}
+
+.reference-content .reference-authors {
+    color: var(--secondary-color);
+    font-size: 0.9rem;
+    margin-bottom: 0.2rem;
+}
+
+.reference-content .reference-publication {
+    color: var(--text-color);
+    font-size: 0.85rem;
+    font-style: italic;
+    margin-bottom: 0.5rem;
+}
+
+.reference-content .reference-url {
+    margin-bottom: 0.5rem;
+}
+
+.reference-content .reference-url a {
+    color: var(--accent-color);
+    text-decoration: none;
+    font-size: 0.8rem;
+    word-break: break-all;
+}
+
+.reference-content .reference-url a:hover {
+    text-decoration: underline;
+}
+
+/* 참조 툴팁 스타일 */
+.reference-tooltip {
+    position: relative;
+}
+
+.reference-tooltip .tooltip-content {
+    visibility: hidden;
+    opacity: 0;
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: var(--primary-color);
+    color: white;
+    padding: 0.8rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    line-height: 1.4;
+    width: 300px;
+    z-index: 1000;
+    transition: opacity 0.3s ease;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.reference-tooltip .tooltip-content::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: var(--primary-color) transparent transparent transparent;
+}
+
+.reference-tooltip:hover .tooltip-content {
+    visibility: visible;
+    opacity: 1;
+}
+
+/* 반응형 디자인 */
+@media (max-width: 768px) {
+    .project-references {
+        padding: 1.5rem;
+        margin-top: 2rem;
+    }
+    
+    .reference-tooltip .tooltip-content {
+        width: 250px;
+        left: 0;
+        transform: none;
+    }
+    
+    .reference-header-compact {
+        padding: 0.8rem 1rem;
+    }
+    
+    .reference-title-compact {
+        font-size: 0.9rem;
+        margin-right: 0.5rem;
+    }
+    
+    .reference-content {
+        padding: 0 1rem 1rem 2.5rem;
+    }
+    
+    .reference-number {
+        width: 20px;
+        height: 20px;
+        line-height: 20px;
+        font-size: 0.7rem;
+        margin-right: 0.6rem;
+    }
 } 
