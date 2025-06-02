@@ -158,6 +158,7 @@ function setupImageLoading() {
 }
 
 // 이미지 모달창 기능 (프로젝트 상세 페이지용)
+/*
 document.addEventListener('DOMContentLoaded', function() {
     if (document.querySelector('.project-gallery')) {
         const galleryImages = document.querySelectorAll('.gallery-item img');
@@ -187,4 +188,5 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-}); 
+});
+*/ 

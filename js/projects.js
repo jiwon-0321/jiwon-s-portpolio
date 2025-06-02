@@ -188,16 +188,87 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 갤러리 설정
         projectGallery.innerHTML = '';
-        project.gallery.forEach(item => {
+        project.gallery.forEach((item, itemIndex) => {
             const galleryItem = document.createElement('div');
             galleryItem.className = item.isMain ? 'gallery-item main' : 'gallery-item sub';
+
+            const dayNightToggle = document.createElement('button');
+            dayNightToggle.className = 'day-night-toggle';
+            dayNightToggle.innerHTML = '<i class="fas fa-moon"></i>'; 
+            dayNightToggle.setAttribute('data-current-mode', 'day');
+            dayNightToggle.setAttribute('title', '밤 이미지 보기');
+
+            const imgElement = document.createElement('img');
+            console.log(`[갤러리 아이템 ${itemIndex}] 초기 이미지(낮):`, item.imageDay);
+            imgElement.src = item.imageDay; 
+            imgElement.alt = item.caption;
+            imgElement.loading = item.isMain ? 'eager' : 'lazy';
+            imgElement.style.transition = 'opacity 0.2s ease-in-out'; // JS에서 직접 트랜지션 설정
+
+            imgElement.onload = () => {
+                console.log(`[갤러리 아이템 ${itemIndex}] 이미지 로드 성공:`, imgElement.src);
+                imgElement.style.opacity = '1'; // 로드 성공 시 확실히 보이게
+            };
+            imgElement.onerror = () => {
+                console.error(`[갤러리 아이템 ${itemIndex}] 이미지 로드 실패:`, imgElement.src);
+                imgElement.alt = '이미지 로드 실패: ' + item.caption; // 에러 메시지 표시
+            };
+
+            const captionElement = document.createElement('div');
+            captionElement.className = 'gallery-caption';
+            captionElement.textContent = item.caption;
+
+            galleryItem.appendChild(imgElement);
+            galleryItem.appendChild(captionElement);
             
-            galleryItem.innerHTML = `
-                <img src="${item.image}" alt="${item.caption}" loading="${item.isMain ? 'eager' : 'lazy'}">
-                <div class="gallery-caption">${item.caption}</div>
-            `;
+            if (item.imageNight && item.imageNight !== item.imageDay) {
+                console.log(`[갤러리 아이템 ${itemIndex}] 낮/밤 토글 버튼 추가됨. 밤 이미지:`, item.imageNight);
+                galleryItem.appendChild(dayNightToggle);
+            } else {
+                console.log(`[갤러리 아이템 ${itemIndex}] 밤 이미지가 없거나 낮과 동일하여 토글 버튼 추가 안 함.`);
+            }
             
             projectGallery.appendChild(galleryItem);
+
+            if (item.imageNight && item.imageNight !== item.imageDay) {
+                dayNightToggle.addEventListener('click', (e) => {
+                    e.stopPropagation(); 
+                    const currentMode = dayNightToggle.getAttribute('data-current-mode');
+                    const targetImage = galleryItem.querySelector('img');
+                    console.log(`[토글 클릭 ${itemIndex}] 현재 모드: ${currentMode}, 클릭된 이미지:`, targetImage);
+
+                    // 이미지 전환 전 opacity를 0으로 (페이드 아웃)
+                    targetImage.style.opacity = '0';
+
+                    setTimeout(() => {
+                        if (currentMode === 'day') {
+                            console.log(`[토글 클릭 ${itemIndex}] 밤 이미지로 변경 시도:`, item.imageNight);
+                            targetImage.src = item.imageNight;
+                            // onload/onerror는 imgElement에 이미 연결되어 있음
+                            dayNightToggle.innerHTML = '<i class="fas fa-sun"></i>';
+                            dayNightToggle.setAttribute('data-current-mode', 'night');
+                            dayNightToggle.setAttribute('title', '낮 이미지 보기');
+                            if (targetImage._magnifierData && targetImage._magnifierData.lens && targetImage._magnifierData.lens.classList.contains('active')) {
+                                const lens = targetImage._magnifierData.lens;
+                                lens.style.backgroundImage = `url('${item.imageNight}')`;
+                                console.log(`[토글 클릭 ${itemIndex}] 돋보기 배경 밤 이미지로 업데이트`);
+                            }
+                        } else {
+                            console.log(`[토글 클릭 ${itemIndex}] 낮 이미지로 변경 시도:`, item.imageDay);
+                            targetImage.src = item.imageDay;
+                            dayNightToggle.innerHTML = '<i class="fas fa-moon"></i>';
+                            dayNightToggle.setAttribute('data-current-mode', 'day');
+                            dayNightToggle.setAttribute('title', '밤 이미지 보기');
+                            if (targetImage._magnifierData && targetImage._magnifierData.lens && targetImage._magnifierData.lens.classList.contains('active')) {
+                                const lens = targetImage._magnifierData.lens;
+                                lens.style.backgroundImage = `url('${item.imageDay}')`;
+                                console.log(`[토글 클릭 ${itemIndex}] 돋보기 배경 낮 이미지로 업데이트`);
+                            }
+                        }
+                        // src 변경 후 opacity를 다시 1로 설정하는 것은 onload 핸들러에 위임
+                    }, 200); // opacity transition 시간과 유사하게 (CSS 트랜지션과 일치시킬 필요)
+                });
+            }
         });
         
         // 프로젝트 설명 설정
@@ -408,38 +479,6 @@ document.addEventListener('DOMContentLoaded', function() {
     // 이미지 캐시 관리
     const imageCache = new Map();
     
-    // 모달 스크롤 상태 관리
-    let openModalCount = 0;
-    let originalBodyOverflow = '';
-    
-    function disableBodyScroll() {
-        if (openModalCount === 0) {
-            originalBodyOverflow = document.body.style.overflow || '';
-            document.body.style.overflow = 'hidden';
-            console.log('스크롤 비활성화됨, 모달 수:', openModalCount + 1);
-        }
-        openModalCount++;
-    }
-    
-    function enableBodyScroll() {
-        openModalCount = Math.max(0, openModalCount - 1);
-        console.log('스크롤 복구 시도, 남은 모달 수:', openModalCount);
-        if (openModalCount === 0) {
-            document.body.style.overflow = originalBodyOverflow;
-            console.log('스크롤 완전 복구됨');
-        }
-    }
-    
-    function forceEnableBodyScroll() {
-        openModalCount = 0;
-        document.body.style.overflow = originalBodyOverflow || 'auto';
-        document.body.style.position = '';
-        document.body.style.top = '';
-        document.body.style.width = '';
-        document.documentElement.style.overflow = '';
-        console.log('강제 스크롤 복구 실행됨');
-    }
-
     // 재질 사용 위치 보기
     function showMaterialUsage(material) {
         const modal = document.getElementById('materialUsageModal');
@@ -527,7 +566,7 @@ document.addEventListener('DOMContentLoaded', function() {
         
         // 모달 표시
         modal.style.display = 'block';
-        disableBodyScroll();
+        document.body.style.overflow = 'hidden';
     }
     
     // 재질 사용 위치 모달 설정
@@ -538,14 +577,14 @@ document.addEventListener('DOMContentLoaded', function() {
         // 닫기 버튼 클릭
         closeBtn.addEventListener('click', function() {
             modal.style.display = 'none';
-            enableBodyScroll();
+            document.body.style.overflow = 'auto';
         });
         
         // 모달 배경 클릭 시 닫기
         modal.addEventListener('click', function(event) {
             if (event.target === modal) {
                 modal.style.display = 'none';
-                enableBodyScroll();
+                document.body.style.overflow = 'auto';
             }
         });
         
@@ -562,7 +601,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 // material usage modal 닫기
                 if (modal.style.display === 'block') {
                     modal.style.display = 'none';
-                    enableBodyScroll();
+                    document.body.style.overflow = 'auto';
                 }
             }
         });
@@ -570,109 +609,157 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 이미지 모달 설정
     function setupImageModal() {
-        const galleryItems = document.querySelectorAll('.gallery-item');
+        console.log('=== setupImageModal 시작 ===');
+        
+        const galleryItems = document.querySelectorAll('.gallery-item'); 
         const modal = document.querySelector('.image-modal');
         const modalImg = document.getElementById('expandedImg');
         const closeModal = document.querySelector('.close-modal');
+        let magnifierToggleButton = null;
+        let isMagnifierOn = false; 
+
+        console.log('🔍 갤러리 아이템 개수:', galleryItems.length);
+        console.log('🔍 모달 요소 존재:', !!modal);
+        console.log('🔍 모달 이미지 요소 존재:', !!modalImg);
+        console.log('🔍 닫기 버튼 존재:', !!closeModal);
         
-        galleryItems.forEach(item => {
-            item.addEventListener('click', function() {
-                const img = this.querySelector('img');
-                
-                // 이미지 로드 완료 후 표시
-                modalImg.onload = function() {
-                    // 화면 크기 대비 적절한 크기로 조정
-                    const windowWidth = window.innerWidth;
-                    const windowHeight = window.innerHeight;
-                    const imgAspectRatio = this.naturalWidth / this.naturalHeight;
-                    const windowAspectRatio = windowWidth / windowHeight;
-                    
-                    if (imgAspectRatio > windowAspectRatio) {
-                        // 이미지가 가로로 더 긴 경우
-                        this.style.width = '95vw';
-                        this.style.height = 'auto';
-                    } else {
-                        // 이미지가 세로로 더 긴 경우
-                        this.style.height = '95vh';
-                        this.style.width = 'auto';
-                    }
-                    
-                    // 고품질 렌더링 설정
-                    this.style.imageRendering = 'high-quality';
-                    this.style.imageRendering = '-webkit-optimize-contrast';
-                };
-                
-                modalImg.src = img.src;
-                modal.style.display = 'flex';
-                disableBodyScroll();
-            });
+        if (galleryItems.length === 0) {
+            console.error('❌ gallery-item 요소를 찾을 수 없습니다!');
+            return;
+        }
+        
+        if (!modal || !modalImg || !closeModal) {
+            console.error('❌ 모달 관련 요소를 찾을 수 없습니다!');
+            return;
+        }
+        
+        galleryItems.forEach((item, index) => {
+            const old_element = item;
+            const new_element = old_element.cloneNode(true);
+            old_element.parentNode.replaceChild(new_element, old_element);
         });
         
-        closeModal.addEventListener('click', function() {
-            modal.style.display = 'none';
-            enableBodyScroll();
-            
-            // 추가 안전장치: 잠시 후 스크롤 상태 재확인
-            setTimeout(() => {
-                const materialModal = document.getElementById('materialUsageModal');
-                if (!materialModal || materialModal.style.display !== 'block') {
-                    forceEnableBodyScroll();
+        const newGalleryItems = document.querySelectorAll('.gallery-item');
+        newGalleryItems.forEach((item, index) => {
+            const imgClickableArea = item.querySelector('img'); 
+            if (!imgClickableArea) {
+                console.warn(`[모달 설정 ${index}] 이미지 클릭 영역(img) 없음`);
+                return;
+            }
+            console.log(`✅ 갤러리 아이템 ${index}의 이미지에 모달용 클릭 리스너 등록`);
+
+            imgClickableArea.addEventListener('click', function(e) {
+                const currentImgSrc = this.src; 
+                console.log(`[모달 열기 ${index}] 클릭된 이미지 src:`, currentImgSrc);
+
+                modal.classList.add('visible');
+                document.body.style.overflow = 'hidden';
+
+                if (magnifierToggleButton && magnifierToggleButton.parentElement) {
+                    magnifierToggleButton.parentElement.removeChild(magnifierToggleButton);
+                    magnifierToggleButton = null;
                 }
-            }, 100);
-        });
-        
-        modal.addEventListener('click', function(event) {
-            if (event.target === modal) {
-                modal.style.display = 'none';
-                enableBodyScroll();
-                
-                // 추가 안전장치: 잠시 후 스크롤 상태 재확인
-                setTimeout(() => {
-                    const materialModal = document.getElementById('materialUsageModal');
-                    if (!materialModal || materialModal.style.display !== 'block') {
-                        forceEnableBodyScroll();
+                isMagnifierOn = false;
+                disableMagnifier(modalImg); // 이전 돋보기 상태 정리
+
+                modalImg.onload = () => {
+                    console.log('🖼️ 모달 이미지 로드 완료:', modalImg.src);
+                    modalImg.style.imageRendering = 'high-quality';
+                    
+                    if (modalImg.src.includes('images/portfolio/exam.jpg') || modalImg.src.includes('images/portfolio/exam_night.jpg')) {
+                        if (!magnifierToggleButton) {
+                            magnifierToggleButton = document.createElement('button');
+                            magnifierToggleButton.className = 'magnifier-toggle-btn';
+                            magnifierToggleButton.innerHTML = '<i class="fas fa-search"></i>';
+                            magnifierToggleButton.style.position = 'absolute';
+                            magnifierToggleButton.style.top = '20px';
+                            magnifierToggleButton.style.left = '20px';
+                            magnifierToggleButton.style.zIndex = '1051';
+                            magnifierToggleButton.style.background = 'rgba(0,0,0,0.5)';
+                            magnifierToggleButton.style.color = 'white';
+                            magnifierToggleButton.style.border = 'none';
+                            magnifierToggleButton.style.padding = '10px';
+                            magnifierToggleButton.style.fontSize = '20px';
+                            magnifierToggleButton.style.cursor = 'pointer';
+                            magnifierToggleButton.style.borderRadius = '5px';
+                            modal.appendChild(magnifierToggleButton);
+
+                            magnifierToggleButton.addEventListener('click', () => {
+                                isMagnifierOn = !isMagnifierOn;
+                                if (isMagnifierOn) {
+                                    enableMagnifier(modalImg);
+                                    magnifierToggleButton.innerHTML = '<i class="fas fa-search-minus"></i>';
+                                } else {
+                                    disableMagnifier(modalImg);
+                                    magnifierToggleButton.innerHTML = '<i class="fas fa-search"></i>';
+                                }
+                            });
+                        }
+                    } else {
+                        // 돋보기 버튼이 필요 없는 다른 이미지의 경우, 이전 돋보기 상태를 확실히 정리
+                        disableMagnifier(modalImg);
+                        if (magnifierToggleButton && magnifierToggleButton.parentElement) {
+                            magnifierToggleButton.parentElement.removeChild(magnifierToggleButton);
+                            magnifierToggleButton = null;
+                        }
                     }
-                }, 100);
-            }
+                };
+                modalImg.onerror = () => {
+                    console.error('❌ 모달 이미지 로드 실패:', modalImg.src);
+                    disableMagnifier(modalImg);
+                };
+                modalImg.src = currentImgSrc;
+            });
+            
+            // gallery-item 전체에 커서 포인터 (토글 버튼 등 자식 요소는 자체 커서 유지)
+            // item.style.cursor = 'pointer'; // 이 줄은 이미지 자체에 클릭 리스너를 달았으므로, 이미지에만 커서를 두거나, gallery-item 전체 유지 가능
         });
         
-        // 이미지 모달 ESC 키 처리
-        document.addEventListener('keydown', function(event) {
-            if (event.key === 'Escape' && modal.style.display === 'flex') {
-                modal.style.display = 'none';
-                enableBodyScroll();
-        
-                // 추가 안전장치: 잠시 후 스크롤 상태 재확인
-                setTimeout(() => {
-                    const materialModal = document.getElementById('materialUsageModal');
-                    if (!materialModal || materialModal.style.display !== 'block') {
-                        forceEnableBodyScroll();
-                    }
-                }, 100);
+        const closeImageModal = () => {
+            modal.classList.remove('visible');
+            document.body.style.overflow = 'auto';
+            disableMagnifier(modalImg);
+            isMagnifierOn = false;
+            if (magnifierToggleButton && magnifierToggleButton.parentElement) {
+                magnifierToggleButton.parentElement.removeChild(magnifierToggleButton);
+                magnifierToggleButton = null;
             }
+            console.log('🎯 모달 닫힘, 돋보기 관련 정리 완료');
+        };
+
+        closeModal.addEventListener('click', closeImageModal);
+        modal.addEventListener('click', (event) => {
+            if (event.target === modal) closeImageModal();
         });
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape' && modal.classList.contains('visible')) closeImageModal();
+        });
+        
+        console.log('=== setupImageModal 완료 ===');
     }
     
     // 프로젝트 목록으로 돌아가기
     backButton.addEventListener('click', function() {
+        console.log('🔙 프로젝트 목록으로 돌아가기');
         projectDetailSection.style.display = 'none';
         projectListSection.style.display = 'block';
         
-        // 모든 모달이 닫혔는지 확인하고 스크롤 강제 복구
-        forceEnableBodyScroll();
+        // 스크롤 복구
+        document.body.style.overflow = 'auto';
         
         // URL 파라미터 제거
         const url = new URL(window.location);
         url.searchParams.delete('project');
         window.history.pushState({}, '', url);
+        
+        console.log('✅ 프로젝트 목록 복귀 완료');
     });
     
     // 뒤로가기/앞으로가기 이벤트 처리
     window.addEventListener('popstate', function() {
         const projectId = getUrlParameter('project');
         
-        // 페이지 전환 시 스크롤 강제 복구
-        forceEnableBodyScroll();
+        document.body.style.overflow = 'auto';
         
         if (projectId) {
             showProjectDetail(projectId);
@@ -684,73 +771,248 @@ document.addEventListener('DOMContentLoaded', function() {
     
     // 초기화
     function initialize() {
-        console.log("프로젝트 페이지 초기화 시작");
+        console.log("🚀 프로젝트 페이지 초기화 시작");
         
-        console.log("프로젝트 데이터:", projectsData);
-        console.log("프로젝트 그리드 요소:", projectGrid);
-        console.log("필터 버튼들:", document.querySelectorAll('.filter-btn'));
+        console.log("📊 프로젝트 데이터:", projectsData);
+        console.log("🎯 프로젝트 그리드 요소:", projectGrid);
+        console.log("🔘 필터 버튼들:", document.querySelectorAll('.filter-btn'));
         
-        // 프로젝트 목록 초기화
         initializeProjectList();
-        
-        // 프로젝트 필터링 설정
         setupProjectFilters();
         
-        // URL에 project 파라미터가 있으면 해당 프로젝트 상세 표시
         const projectId = getUrlParameter('project');
         if (projectId) {
-            console.log("URL에서 프로젝트 ID 발견:", projectId);
+            console.log("🔗 URL에서 프로젝트 ID 발견:", projectId);
             showProjectDetail(projectId);
         }
         
-        console.log("프로젝트 페이지 초기화 완료");
+        console.log("✅ 프로젝트 페이지 초기화 완료");
     }
     
-    // 페이지 언로드 시 스크롤 복구 (안전장치)
-    window.addEventListener('beforeunload', function() {
-        forceEnableBodyScroll();
-    });
-    
-    // 페이지 포커스 시 스크롤 상태 체크
-    window.addEventListener('focus', function() {
-        // 열린 모달이 없는데 스크롤이 비활성화되어 있으면 강제 복구
-        const materialModal = document.getElementById('materialUsageModal');
-        const imageModal = document.querySelector('.image-modal');
-        
-        const materialModalOpen = materialModal && materialModal.style.display === 'block';
-        const imageModalOpen = imageModal && imageModal.style.display === 'flex';
-        
-        if (!materialModalOpen && !imageModalOpen && document.body.style.overflow === 'hidden') {
-            console.log('스크롤 상태 불일치 감지 - 강제 복구');
-            forceEnableBodyScroll();
-        }
-    });
-    
-    // 긴급 스크롤 복구 키보드 단축키 (Ctrl+Shift+S)
-    document.addEventListener('keydown', function(event) {
-        if (event.ctrlKey && event.shiftKey && event.key === 'S') {
-            event.preventDefault();
-            console.log('긴급 스크롤 복구 단축키 실행');
-            forceEnableBodyScroll();
-            alert('스크롤이 강제로 복구되었습니다.');
-        }
-    });
-    
-    // 페이지 클릭 시 스크롤 상태 자동 체크 (3초마다)
-    setInterval(function() {
-        const materialModal = document.getElementById('materialUsageModal');
-        const imageModal = document.querySelector('.image-modal');
-        
-        const materialModalOpen = materialModal && materialModal.style.display === 'block';
-        const imageModalOpen = imageModal && imageModal.style.display === 'flex';
-        
-        // 모달이 모두 닫혀있는데 스크롤이 비활성화되어 있으면 복구
-        if (!materialModalOpen && !imageModalOpen && document.body.style.overflow === 'hidden') {
-            console.log('자동 스크롤 상태 체크 - 불일치 감지, 복구 실행');
-            forceEnableBodyScroll();
-        }
-    }, 3000);
-    
-    // 초기화 실행
     initialize();
+
+    // 돋보기 렌즈 기능
+    function enableMagnifier(img) {
+        console.log('✨ enableMagnifier 호출 (토글 ON)');
+        // 렌즈 설정 및 활성화 (데이터가 이미 있으면 internalActivate 호출, 없으면 새로 설정 후 활성화)
+        if (img._magnifierData && img._magnifierData.internalActivate) {
+            console.log('기존 돋보기 데이터 사용하여 internalActivate 호출');
+            img._magnifierData.internalActivate();
+        } else {
+            console.log('새 돋보기 설정 시작 (setupLensIfNeeded 호출, 즉시 활성화)');
+            setupLensIfNeeded(img, true); // true는 즉시 활성화 (activateNow)
+        }
+    }
+
+    // disableMagnifier는 돋보기 기능을 끌 때 또는 모달이 닫힐 때 호출
+    function disableMagnifier(img) {
+        console.log('🧹 disableMagnifier 호출 (토글 OFF 또는 모달 닫힘)');
+        if (img._magnifierData && img._magnifierData.internalDeactivate) {
+            console.log('기존 돋보기 데이터 사용하여 internalDeactivate 호출');
+            img._magnifierData.internalDeactivate();
+        } else {
+            // 데이터가 없어도 혹시 모를 잔여 렌즈 처리
+            const existingLens = img.parentElement && img.parentElement.querySelector('.magnifier-lens');
+            if (existingLens) {
+                existingLens.classList.remove('active'); // CSS로 숨김
+                // DOM에서 제거는 모달 닫힐 때 주로 처리, 여기선 숨기기만 해도 충분할 수 있음
+            }
+        }
+    }
+
+    function setupLensIfNeeded(img, activateNow) {
+        console.log(`🛠️ setupLensIfNeeded 호출 - activateNow: ${activateNow}`);
+        let lens = img.parentElement && img.parentElement.querySelector('.magnifier-lens');
+        if (!lens) {
+            console.log('렌즈 DOM 요소 새로 생성 (setupLensIfNeeded)');
+            lens = document.createElement('div');
+            lens.className = 'magnifier-lens';
+            if(img.parentElement) img.parentElement.appendChild(lens);
+            else {
+                console.error('이미지 부모 요소가 없어 렌즈를 추가할 수 없습니다.');
+                return;
+            }
+        }
+
+        let magnifierActive = false; 
+        const zoom = 2;
+
+        const setupActualLens = () => {
+            if (!img.complete || !img.naturalWidth || img.naturalWidth === 0) {
+                console.warn('이미지 로드 미완료 또는 원본 크기 정보 없음 (setupActualLens).');
+                img.onload = () => { 
+                    console.log('이미지 onload 발생 (setupActualLens), 재시도');
+                    setupActualLens(); 
+                }
+                return;
+            }
+
+            let dynamicLensSize = Math.max(100, Math.min(img.width * 0.15, 180));
+            lens.style.width = dynamicLensSize + 'px';
+            lens.style.height = dynamicLensSize + 'px';
+            const currentLensSize = dynamicLensSize;
+            console.log(`🔬 렌즈 실제 설정 - 표시:${img.width}x${img.height}, 원본:${img.naturalWidth}x${img.naturalHeight}, 렌즈크기:${currentLensSize}`);
+            
+            const ratioX = img.naturalWidth / img.width;
+            const ratioY = img.naturalHeight / img.height;
+            lens.style.backgroundImage = `url('${img.src}')`;
+            lens.style.backgroundRepeat = 'no-repeat';
+            const backgroundWidth = img.naturalWidth * zoom;
+            const backgroundHeight = img.naturalHeight * zoom;
+            lens.style.backgroundSize = `${backgroundWidth}px ${backgroundHeight}px`;
+
+            let animationFrameId = null;
+            let currentEventX = 0;
+            let currentEventY = 0;
+            let scheduledFrame = false;
+
+            function updateLensPosition() {
+                scheduledFrame = false; 
+                if (!magnifierActive || !img.parentElement || !lens.parentElement || !lens.classList.contains('active')) {
+                    if (animationFrameId) cancelAnimationFrame(animationFrameId);
+                    animationFrameId = null;
+                    return;
+                }
+
+                const rect = img.getBoundingClientRect();
+                let x = currentEventX - rect.left;
+                let y = currentEventY - rect.top;
+
+                // 이 조건은 마우스가 이미지를 벗어났을 때 handleMouseLeave에서 처리되므로,
+                // updateLensPosition에서는 이미 렌즈가 active 상태이고 마우스가 이미지 위에 있다고 가정해도 무방합니다.
+                // 다만, 미세한 타이밍 이슈로 x, y가 범위를 살짝 벗어나는 경우를 대비해 방어 코드를 둘 수는 있습니다.
+                // if (x < 0 || x > img.width || y < 0 || y > img.height) return;
+
+                let lensX = x - currentLensSize / 2;
+                let lensY = y - currentLensSize / 2;
+                lensX = Math.max(0, Math.min(lensX, img.width - currentLensSize));
+                lensY = Math.max(0, Math.min(lensY, img.height - currentLensSize));
+
+                lens.style.left = lensX + 'px';
+                lens.style.top = lensY + 'px';
+
+                let bgPosX_ideal = -((x * ratioX * zoom) - (currentLensSize / 2));
+                let bgPosY_ideal = -((y * ratioY * zoom) - (currentLensSize / 2));
+
+                const minBgX = -(backgroundWidth - currentLensSize);
+                const minBgY = -(backgroundHeight - currentLensSize);
+                
+                const finalBgPosX = Math.max(minBgX, Math.min(0, bgPosX_ideal));
+                const finalBgPosY = Math.max(minBgY, Math.min(0, bgPosY_ideal));
+                
+                lens.style.backgroundPosition = `${finalBgPosX}px ${finalBgPosY}px`;
+            }
+
+            function moveLens(e) {
+                if (!magnifierActive) return;
+                e.preventDefault();
+
+                currentEventX = e.touches ? e.touches[0].clientX : e.clientX;
+                currentEventY = e.touches ? e.touches[0].clientY : e.clientY;
+
+                // 마우스가 이미지 영역을 벗어나는지 여기서 한 번 더 체크하여, 벗어났다면 업데이트 요청 안함
+                const rect = img.getBoundingClientRect();
+                const relativeX = currentEventX - rect.left;
+                const relativeY = currentEventY - rect.top;
+
+                if (relativeX < 0 || relativeX > img.width || relativeY < 0 || relativeY > img.height) {
+                     // handleMouseLeave가 호출되어 렌즈를 비활성화할 것이므로 여기서는 프레임 요청을 하지 않음.
+                    if (scheduledFrame && animationFrameId) {
+                        cancelAnimationFrame(animationFrameId);
+                        scheduledFrame = false;
+                        animationFrameId = null;
+                    }
+                    // 렌즈를 즉시 숨기고 싶다면 lens.classList.remove('active') 호출
+                    // 하지만 handleMouseLeave와 동작이 겹칠 수 있으므로 주의.
+                    // handleMouseLeave가 이미 렌즈를 숨겼을 수 있으므로, 여기서는 추가적인 숨김 처리를 하지 않는 것이 안전할 수 있음.
+                    return;
+                }
+                
+                if (!lens.classList.contains('active')) {
+                    lens.classList.add('active');
+                }
+
+                if (!scheduledFrame) {
+                    animationFrameId = requestAnimationFrame(updateLensPosition);
+                    scheduledFrame = true;
+                }
+            }
+
+            const handleMouseLeave = () => {
+                if (scheduledFrame && animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    scheduledFrame = false;
+                    animationFrameId = null;
+                }
+                if (magnifierActive) { 
+                    console.log('🖱️ 마우스 이미지 벗어남, 렌즈 숨김 (토글 상태 유지)');
+                    if (lens && lens.parentElement) { 
+                       lens.classList.remove('active');
+                    }
+                }
+            };
+
+            const internalActivate = (e) => {
+                if (!img.complete || !img.naturalWidth || img.naturalWidth === 0) {
+                    console.warn('🚫 돋보기 활성화 불가: 이미지 원본 크기 정보 없음 (internalActivate).');
+                    if(!img.complete) img.onload = setupActualLens; 
+                    return;
+                }
+                console.log('🟢 internalActivate: 돋보기 ON, 리스너 연결');
+                magnifierActive = true;
+                // internalActivate 시점에서는 렌즈를 바로 active로 만들지 않고,
+                // 첫 mousemove 이벤트 발생 시 moveLens 함수 내에서 active로 만듭니다.
+                // lens.classList.add('active'); // 이 줄은 moveLens 내부로 이동 또는 삭제 고려
+
+                img.removeEventListener('mousemove', moveLens);
+                img.removeEventListener('touchmove', moveLens);
+                img.removeEventListener('mouseleave', handleMouseLeave);
+                img.addEventListener('mousemove', moveLens);
+                img.addEventListener('touchmove', moveLens, { passive: false });
+                img.addEventListener('mouseleave', handleMouseLeave);
+                
+                // 초기 마우스 위치가 이미지 위에 있다면 즉시 렌즈 표시 (선택적)
+                // if (e) moveLens(e); // 이 부분은 사용자가 원할 경우 추가
+            };
+
+            const internalDeactivate = () => {
+                if (scheduledFrame && animationFrameId) {
+                    cancelAnimationFrame(animationFrameId);
+                    scheduledFrame = false;
+                    animationFrameId = null;
+                }
+                console.log('🔴 internalDeactivate: 돋보기 OFF, 리스너 제거 및 렌즈 숨김');
+                magnifierActive = false;
+                if (lens && lens.parentElement) {
+                    lens.classList.remove('active');
+                }
+
+                img.removeEventListener('mousemove', moveLens);
+                img.removeEventListener('touchmove', moveLens);
+                img.removeEventListener('mouseleave', handleMouseLeave);
+            };
+
+            img._magnifierData = { lens, internalActivate, internalDeactivate, moveLens }; 
+            console.log('🔬 _magnifierData 설정 완료');
+            
+            if (activateNow) {
+                internalActivate(); // e 인자 없이 호출
+            }
+        };
+        
+        if (img.complete && img.naturalWidth > 0 && img.naturalHeight > 0) {
+            setupActualLens();
+        } else {
+            console.log('이미지 로드/원본크기 확보 대기 (setupLensIfNeeded), onload 핸들러 설정');
+            const existingOnload = img.onload;
+            img.onload = () => {
+                if (existingOnload) existingOnload();
+                console.log('🖼️ setupLensIfNeeded 내 이미지 로드 완료 -> setupActualLens 호출');
+                setupActualLens();
+            };
+            if (img.complete && (!img.naturalWidth || img.naturalWidth === 0)) {
+                 console.warn('이미지는 complete 상태지만 naturalWidth가 0입니다. (setupLensIfNeeded). 이미지 로딩에 문제가 있을 수 있습니다.');
+            }
+        }
+    }
 }); 

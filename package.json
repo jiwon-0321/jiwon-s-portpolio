@@ -1,0 +1,11 @@
+{
+  "name": "portfolio-static-site",
+  "version": "1.0.0",
+  "description": "정적 HTML/CSS/JS 포트폴리오 사이트",
+  "scripts": {
+    "start": "serve ."
+  },
+  "devDependencies": {
+    "serve": "^14.2.0"
+  }
+} 

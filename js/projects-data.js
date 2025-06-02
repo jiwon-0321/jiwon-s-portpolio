@@ -6,7 +6,7 @@ const projectsData = [
         category: "residential",
         year: "2023",
         description: "A contemporary residence designed for a family of four, featuring open living spaces and a seamless indoor-outdoor connection.",
-        thumbnail: "/images/portfolio/exam.jpg",
+        thumbnail: "images/portfolio/exam.jpg",
         location: "Jeju Island, South Korea",
         area: "350 m²",
         client: "Private Family",
@@ -17,27 +17,32 @@ const projectsData = [
         ],
         gallery: [
             {
-                image: "/images/portfolio/exam.jpg",
+                imageDay: "images/portfolio/exam.jpg",
+                imageNight: "images/portfolio/exam_night.jpg",
                 caption: "Modern Villa - Exterior View",
                 isMain: true
             },
             {
-                image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Open Concept Living Room",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1617104424032-cb15208e2e0e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1617104424032-cb15208e2e0e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1617104424032-cb15208e2e0e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Modern Kitchen with Island",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1512917774080-9991f1c4c750?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Oceanfront View",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1507652313519-d4e9174996dd?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Infinity Pool with Ocean View",
                 isMain: false
             }
@@ -185,27 +190,32 @@ const projectsData = [
         ],
         gallery: [
             {
-                image: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                imageDay: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                imageNight: "https://images.unsplash.com/photo-1497366811353-6870744d04b2?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
                 caption: "Urban Office Space - Central Area",
                 isMain: true
             },
             {
-                image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Collaborative Workspace",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Meeting Room",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1572025442646-866d16c84a54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1572025442646-866d16c84a54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1572025442646-866d16c84a54?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Private Work Pods",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageDay: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1519389950473-47ba0277781c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
                 caption: "Lounge Area",
                 isMain: false
             }
@@ -250,116 +260,108 @@ const projectsData = [
         ],
         gallery: [
             {
-                image: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
-                caption: "Main Office Area - Open Concept Design",
+                imageDay: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                imageNight: "https://images.unsplash.com/photo-1497366754035-f200968a6e72?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                caption: "Modern Office Main View",
                 isMain: true
             },
             {
-                image: "https://images.unsplash.com/photo-1497215842964-222b430dc094?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Glass-walled Meeting Room",
+                imageDay: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1517048676732-d65bc937f952?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Collaborative Meeting Area",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1519974719765-e6559eac2575?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Collaborative Breakout Area",
-                isMain: false
-            },
-            {
-                image: "https://images.unsplash.com/photo-1604328698692-f76ea9498e76?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Executive Private Office",
-                isMain: false
-            },
-            {
-                image: "https://images.unsplash.com/photo-1600494448637-2b37b2d8df14?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Modern Staff Kitchen",
+                imageDay: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1522071820081-009f0129c71c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Focus Workstation Pods",
                 isMain: false
             }
         ],
         materials: [
             {
-                name: "Polished Concrete",
-                description: "Used for flooring in common areas",
-                color: "#E0E0E0"
+                name: "Light Oak Flooring",
+                description: "Used throughout the main office areas for a bright and airy feel.",
+                color: "#E0C9A6"
             },
             {
-                name: "Walnut Wood",
-                description: "Custom cabinetry and feature walls",
-                color: "#8B5A2B"
+                name: "Glass Partitions",
+                description: "Separates office and meeting spaces while maintaining visual openness.",
+                color: "#F0F8FF"
             },
             {
-                name: "Brushed Steel",
-                description: "Architectural details and fixtures",
-                color: "#A9A9A9"
+                name: "Acoustic Felt Panels",
+                description: "Used on walls and ceilings to absorb sound and reduce noise.",
+                color: "#808080"
             },
             {
-                name: "Acoustic Panels",
-                description: "Sound absorption on walls and ceilings",
-                color: "#F5F5F5"
+                name: "Powder Coated Metal Accents",
+                description: "For furniture legs, light fixtures, and trim details.",
+                color: "#333333"
             }
         ]
     },
     {
-        id: "cultural-center",
-        title: "Cultural Arts Center",
-        category: "public",
+        id: "cozy-cafe-interior",
+        title: "Cozy Cafe Interior",
+        category: "hospitality",
         year: "2022",
-        description: "A community cultural center designed to host various arts events, exhibitions, and educational programs.",
-        thumbnail: "https://images.unsplash.com/photo-1518005068251-37900150dfca?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-        location: "Busan, South Korea",
-        area: "1,200 m²",
-        client: "Busan City Government",
+        description: "An inviting cafe space featuring warm lighting, natural textures, and comfortable seating arrangements.",
+        thumbnail: "https://images.unsplash.com/photo-1559305403-1a0a8a954de8?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
+        location: "Itaewon, Seoul",
+        area: "120 m²",
+        client: "The Daily Grind Cafe",
         fullDescription: [
-            "This cultural arts center was designed as a versatile community space that caters to various cultural activities and events. The building features a contemporary design with elements inspired by traditional Korean architecture, creating a harmonious blend of old and new.",
-            "The main hall can accommodate up to 300 people and can be configured for performances, exhibitions, or community gatherings. Adjustable acoustics and flexible seating arrangements ensure optimal conditions for different types of events.",
-            "Surrounding the main hall are smaller studios and workshop spaces for educational programs and artist residencies. The building also includes a café and outdoor sculpture garden that serve as informal gathering spaces for the community."
+            "The design for The Daily Grind Cafe aimed to create a warm, inviting atmosphere where customers can relax and enjoy their coffee. The space utilizes a palette of natural materials, including reclaimed wood, exposed brick, and soft textiles.",
+            "Lighting plays a crucial role in setting the mood, with a mix of ambient, task, and accent lighting to create a cozy and layered effect. Comfortable seating options, from plush armchairs to communal tables, cater to different customer preferences.",
+            "A custom-built counter serves as the focal point of the cafe, showcasing pastries and coffee-making equipment. The overall design balances rustic charm with modern simplicity, creating a timeless and welcoming space for the local community."
         ],
         gallery: [
             {
-                image: "https://images.unsplash.com/photo-1518005068251-37900150dfca?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
-                caption: "Cultural Arts Center - Main Entrance",
+                imageDay: "https://images.unsplash.com/photo-1559305403-1a0a8a954de8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                imageNight: "https://images.unsplash.com/photo-1559305403-1a0a8a954de8?ixlib=rb-1.2.1&auto=format&fit=crop&w=800&q=70",
+                caption: "Cozy Cafe - Main Seating Area",
                 isMain: true
             },
             {
-                image: "https://images.unsplash.com/photo-1470229722913-7c0e2dbbafd3?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Performance Hall",
+                imageDay: "https://images.unsplash.com/photo-1511920183303-a818f19050b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1511920183303-a818f19050b0?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Barista Counter and Display",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1525909002-1b05e0c869d8?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Exhibition Space",
+                imageDay: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1509042239860-f550ce710b93?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Window Seating Area",
                 isMain: false
             },
             {
-                image: "https://images.unsplash.com/photo-1594388256411-8c951fda4c47?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Workshop Area",
-                isMain: false
-            },
-            {
-                image: "https://images.unsplash.com/photo-1617713964062-f55a65c8712c?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
-                caption: "Outdoor Sculpture Garden",
+                imageDay: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                imageNight: "https://images.unsplash.com/photo-1554118811-1e0d58224f24?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=70",
+                caption: "Detail of Cafe Decor",
                 isMain: false
             }
         ],
         materials: [
             {
-                name: "Natural Stone",
-                description: "Used for exterior facades and outdoor spaces",
-                color: "#CDC5BF"
+                name: "Reclaimed Wood",
+                description: "For feature walls and custom furniture",
+                color: "#A0522D"
             },
             {
-                name: "Acoustic Wood Panels",
-                description: "Used in the main performance hall",
-                color: "#8B4513"
+                name: "Exposed Brick",
+                description: "Adds texture and warmth to the interior",
+                color: "#B22222"
             },
             {
-                name: "Exposed Concrete",
-                description: "Structural elements and feature walls",
-                color: "#C0C0C0"
+                name: "Polished Concrete Floors",
+                description: "Durable and easy to maintain",
+                color: "#808080"
             },
             {
-                name: "Tempered Glass",
-                description: "Used for the entrance and exhibition areas",
-                color: "#E6F2FF"
+                name: "Blackened Steel Accents",
+                description: "For lighting fixtures and shelving supports",
+                color: "#36454F"
             }
         ]
     }

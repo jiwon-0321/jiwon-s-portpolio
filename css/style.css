@@ -873,7 +873,7 @@ footer {
     width: 100%;
     height: 100%;
     object-fit: cover;
-    transition: transform 0.5s ease;
+    transition: opacity 0.2s ease-in-out, transform 0.5s ease;
 }
 
 .gallery-item:hover img {
@@ -964,19 +964,27 @@ footer {
 
 /* 모달 스타일 */
 .image-modal {
-    display: none;
+    display: none; /* 기본 숨김 */
     position: fixed;
-    top: 0;
+    z-index: 1050;
     left: 0;
+    top: 0;
     width: 100%;
     height: 100%;
-    background-color: rgba(0, 0, 0, 0.95);
-    z-index: 1002;
-    overflow: hidden;
-    justify-content: center;
+    background-color: rgba(0, 0, 0, 0.85);
     align-items: center;
-    padding: 20px;
-    box-sizing: border-box;
+    justify-content: center;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s ease, visibility 0s linear 0.3s; /* visibility는 opacity 전환 후 변경 */
+    overflow: hidden; /* 모달 자체 스크롤 방지 */
+}
+
+.image-modal.visible {
+    display: flex; /* JS에서 이 클래스 추가 시 보이도록 함 */
+    opacity: 1;
+    visibility: visible;
+    transition: opacity 0.3s ease, visibility 0s linear 0s;
 }
 
 .modal-content {
@@ -2265,4 +2273,83 @@ body:has(.projects-page) header div {
         font-size: 0.7rem;
         margin-right: 0.6rem;
     }
+}
+
+/* 돋보기 토글 버튼 스타일 */
+.magnifier-toggle-btn {
+    position: absolute;
+    top: 20px; 
+    left: 20px;
+    z-index: 1051; /* 모달 내용(modal-content)보다는 위, 닫기 버튼(close-modal)보다는 아래 또는 같게 */
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    padding: 12px;
+    font-size: 18px; /* 아이콘 크기 */
+    cursor: pointer;
+    border-radius: 8px;
+    transition: background-color 0.3s ease, transform 0.2s ease;
+    line-height: 1; /* 아이콘 버튼 정렬을 위해 */
+    box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+}
+
+.magnifier-toggle-btn:hover {
+    background: rgba(0,0,0,0.8);
+    transform: scale(1.05);
+}
+
+.magnifier-toggle-btn i {
+    display: block; /* 아이콘 중앙 정렬 및 크기 안정화 */
+}
+
+/* 기존 돋보기 렌즈 스타일 수정/확인 */
+.magnifier-lens {
+    position: absolute;
+    border: 1px solid #ccc;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.3);
+    box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    cursor: none;
+    display: none;
+    pointer-events: none;
+    z-index: 10;
+    /* 이미지 렌더링 품질 향상 */
+    image-rendering: -webkit-optimize-contrast; /* Chrome, Safari 등 Webkit 계열 */
+    image-rendering: crisp-edges; /* Firefox 최신 버전 및 표준 지향 브라우저 */
+    image-rendering: high-quality; /* 가능한 경우 최상 품질 (일부 브라우저 지원) */
+    /* image-rendering: pixelated; - 픽셀화 효과, 일반 사진에는 부적합 */
+    /* -ms-interpolation-mode: nearest-neighbor; - IE, 픽셀 보간 안함 */
+}
+
+.magnifier-lens.active {
+    display: block;
+    opacity: 1;
+}
+
+/* 낮/밤 전환 토글 버튼 스타일 */
+.day-night-toggle {
+    position: absolute;
+    top: 10px;
+    right: 10px;
+    background-color: rgba(0, 0, 0, 0.5);
+    color: white;
+    border: none;
+    border-radius: 50%; /* 원형 버튼 */
+    width: 30px; /* 크기 조절 */
+    height: 30px; /* 크기 조절 */
+    font-size: 14px; /* 아이콘 크기 조절 */
+    line-height: 30px; /* 아이콘 수직 중앙 정렬 */
+    text-align: center;
+    cursor: pointer;
+    z-index: 5; /* 캡션보다는 위에, 하지만 이미지 클릭에 방해 안 되게 */
+    opacity: 0.8;
+    transition: opacity 0.3s ease, background-color 0.3s ease;
+}
+
+.gallery-item:hover .day-night-toggle {
+    opacity: 1;
+}
+
+.day-night-toggle:hover {
+    background-color: rgba(0, 0, 0, 0.8);
 } 
