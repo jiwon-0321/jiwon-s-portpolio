@@ -191,7 +191,7 @@ document.addEventListener('DOMContentLoaded', function() {
         project.gallery.forEach((item, itemIndex) => {
             const galleryItem = document.createElement('div');
             galleryItem.className = item.isMain ? 'gallery-item main' : 'gallery-item sub';
-
+            
             const dayNightToggle = document.createElement('button');
             dayNightToggle.className = 'day-night-toggle';
             dayNightToggle.innerHTML = '<i class="fas fa-moon"></i>'; 
@@ -622,7 +622,7 @@ document.addEventListener('DOMContentLoaded', function() {
         console.log('🔍 모달 요소 존재:', !!modal);
         console.log('🔍 모달 이미지 요소 존재:', !!modalImg);
         console.log('🔍 닫기 버튼 존재:', !!closeModal);
-        
+            
         if (galleryItems.length === 0) {
             console.error('❌ gallery-item 요소를 찾을 수 없습니다!');
             return;
@@ -630,9 +630,9 @@ document.addEventListener('DOMContentLoaded', function() {
         
         if (!modal || !modalImg || !closeModal) {
             console.error('❌ 모달 관련 요소를 찾을 수 없습니다!');
-            return;
-        }
-        
+                return;
+            }
+            
         galleryItems.forEach((item, index) => {
             const old_element = item;
             const new_element = old_element.cloneNode(true);
@@ -730,7 +730,7 @@ document.addEventListener('DOMContentLoaded', function() {
         closeModal.addEventListener('click', closeImageModal);
         modal.addEventListener('click', (event) => {
             if (event.target === modal) closeImageModal();
-        });
+            });
         document.addEventListener('keydown', (event) => {
             if (event.key === 'Escape' && modal.classList.contains('visible')) closeImageModal();
         });

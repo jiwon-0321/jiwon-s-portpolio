@@ -188,5 +188,5 @@ document.addEventListener('DOMContentLoaded', function() {
             });
         }
     }
-});
+}); 
 */ 
