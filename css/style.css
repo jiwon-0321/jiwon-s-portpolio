@@ -2691,8 +2691,9 @@ body:has(.projects-page) header div {
 
 .skills-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-    gap: 2.5rem;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: stretch; /* 모든 카드가 가장 높은 카드의 높이에 맞춰지도록 함 */
 }
 
 .skill-category {
@@ -3627,4 +3628,227 @@ body:has(.projects-page) header div {
     .content-overlay .view-project {
         padding: 0.7rem 1.5rem;
     }
-} 
+}
+
+.skill-icon-tooltip-container {
+    position: relative;
+    display: inline-block;
+}
+
+.custom-tooltip {
+    visibility: hidden;
+    opacity: 0;
+    min-width: 60px;
+    background: var(--primary-color, #222);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 6px 12px;
+    position: absolute;
+    z-index: 10;
+    left: 50%;
+    bottom: 120%;
+    transform: translateX(-50%);
+    transition: opacity 0.2s;
+    font-size: 0.9rem;
+    pointer-events: none;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+}
+
+.skill-icon-tooltip-container:hover .custom-tooltip {
+    visibility: visible;
+    opacity: 1;
+}
+
+.custom-tooltip::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    border-color: var(--primary-color, #222) transparent transparent transparent;
+}
+
+/* 툴팁이 잘리지 않도록 overflow 속성을 강제로 visible로 설정합니다. */
+.skill-category, .skill-item {
+    overflow: visible;
+}
+
+/* AI Tools 카드에만 적용되는 스크롤 스타일 */
+#ai-tools-card .skills-list {
+    max-height: 350px; /* 5개의 항목이 보이도록 높이를 넉넉하게 수정 */
+    overflow-y: auto;  /* 세로 스크롤을 자동으로 표시 */
+    padding-right: 15px; /* 스크롤바와 내용 간의 간격 확보 */
+}
+
+/* 스크롤바 디자인 (웹킷 기반 브라우저용: 크롬, 사파리 등) */
+#ai-tools-card .skills-list::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+#ai-tools-card .skills-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05); /* 스크롤바 배경 */
+    border-radius: 10px;
+}
+
+#ai-tools-card .skills-list::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color); /* 스크롤바 색상 */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+#ai-tools-card .skills-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-light); /* 스크롤바 호버 색상 */
+}
+
+/* AI Tools 카드에서 툴팁이 잘리지 않도록 overflow 속성 재정의 */
+#ai-tools-card {
+    overflow: visible;
+}
+
+/* AI Tools 카드에만 적용되는 스크롤 스타일 */
+#ai-tools-card .skills-list {
+    max-height: 350px; /* 5개의 항목이 보이도록 높이를 넉넉하게 수정 */
+    overflow-y: auto;  /* 세로 스크롤을 자동으로 표시 */
+    padding-right: 15px; /* 스크롤바와 내용 간의 간격 확보 */
+}
+
+/* 스크롤바 디자인 (웹킷 기반 브라우저용: 크롬, 사파리 등) */
+#ai-tools-card .skills-list::-webkit-scrollbar {
+    width: 8px; /* 스크롤바 너비 */
+}
+
+#ai-tools-card .skills-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05); /* 스크롤바 배경 */
+    border-radius: 10px;
+}
+
+#ai-tools-card .skills-list::-webkit-scrollbar-thumb {
+    background-color: var(--accent-color); /* 스크롤바 색상 */
+    border-radius: 10px;
+    border: 2px solid transparent;
+    background-clip: content-box;
+}
+
+#ai-tools-card .skills-list::-webkit-scrollbar-thumb:hover {
+    background-color: var(--accent-light); /* 스크롤바 호버 색상 */
+}
+
+/* --- 카드 레이아웃 시스템 재설계 --- */
+
+/* 1. 카드들을 담는 그리드 설정 */
+.skills-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
+    align-items: stretch; /* 모든 카드가 가장 긴 카드의 높이에 맞춰지도록 함 */
+}
+
+/* 2. 개별 카드 내부를 Flexbox로 설정 */
+.skill-category {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 그리드에 의해 정해진 높이를 꽉 채움 */
+    padding: 2.5rem;
+    /* 기존 glass-card 스타일은 유지 */
+}
+
+.skill-category h3 {
+    flex-shrink: 0; /* 제목의 높이는 줄어들지 않도록 고정 */
+}
+
+.skills-list {
+    flex-grow: 1; /* 남은 공간을 모두 채우도록 설정 */
+    min-height: 0; /* Flexbox의 크기 계산 오류를 방지하는 중요한 속성 */
+    overflow: hidden; /* 기본적으로 내용이 넘치면 숨김 */
+}
+
+/* 3. AI Tools 카드에만 스크롤 적용 */
+#ai-tools-card .skills-list {
+    overflow-y: auto; /* 내용이 넘칠 때만 세로 스크롤바 표시 */
+    scrollbar-gutter: stable; /* 스크롤바 공간을 항상 확보하여 좌우 비율 깨짐 방지 */
+    padding-right: 10px; /* 스크롤바와 내용 사이의 간격 */
+}
+
+/* 4. 툴팁이 잘리지 않도록 AI 카드 자체는 overflow:visible 로 설정 */
+#ai-tools-card {
+    overflow: visible;
+}
+
+/* =========================================
+    최종 수정: Flexbox 레이아웃 및 글로벌 툴팁
+   ========================================= */
+
+/* 1. 카드 높이 및 비율 자동 맞춤 */
+.skills-grid {
+    align-items: stretch; /* 모든 카드가 가장 긴 카드의 높이에 맞춰지도록 함 */
+}
+
+.skill-category {
+    display: flex;
+    flex-direction: column;
+    height: 100%; /* 부모 그리드에 의해 정해진 높이를 꽉 채움 */
+}
+
+.skill-category h3 {
+    flex-shrink: 0; /* 제목 높이는 고정 */
+}
+
+.skills-list {
+    flex-grow: 1; /* 남은 공간을 모두 채움 */
+    overflow: hidden; /* 기본적으로 내용이 넘치면 숨김 */
+    min-height: 0; /* Flexbox 크기 계산 오류 방지 */
+}
+
+/* 2. AI Tools 카드에만 스크롤 적용 */
+#ai-tools-card .skills-list {
+    overflow-y: auto;
+    scrollbar-gutter: stable; /* 스크롤바 공간을 미리 확보하여 비율 유지 */
+    padding-right: 10px;
+}
+
+/* 3. 새로운 글로벌 툴팁 스타일 (잘림 문제 해결) */
+#global-skill-tooltip {
+    position: fixed;
+    left: 0;
+    top: 0;
+    z-index: 9999;
+    pointer-events: none;
+    background: var(--primary-color, #222);
+    color: #fff;
+    text-align: center;
+    border-radius: 6px;
+    padding: 6px 12px;
+    font-size: 0.9rem;
+    white-space: nowrap;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    transition: opacity 0.2s ease, visibility 0.2s ease;
+    opacity: 0;
+    visibility: hidden;
+}
+
+#global-skill-tooltip.is-visible {
+    opacity: 1;
+    visibility: visible;
+}
+
+#global-skill-tooltip::after {
+    content: '';
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    border-width: 6px;
+    border-style: solid;
+    top: 100%;
+    border-color: var(--primary-color, #222) transparent transparent transparent;
+}
+
+#global-skill-tooltip.positioned-below::after {
+    top: auto;
+    bottom: 100%;
+    border-color: transparent transparent var(--primary-color, #222) transparent;
+}
